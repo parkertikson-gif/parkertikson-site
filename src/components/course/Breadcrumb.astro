@@ -1,0 +1,17 @@
+---
+interface Props {
+  degree: 'masters' | 'bachelors';
+  courseTitle: string;
+  trail?: string;
+}
+const { degree, courseTitle, trail = 'Final Project' } = Astro.props;
+const degreeLabel = degree === 'masters' ? "Master's" : "Bachelor's";
+const degreeHref = degree === 'masters' ? '/masters' : '/bachelors';
+---
+<div class="breadcrumb">
+  <a href={degreeHref}>{degreeLabel}</a>
+  <span class="sep">/</span>
+  <a href={degreeHref}>{courseTitle}</a>
+  <span class="sep">/</span>
+  <span>{trail}</span>
+</div>

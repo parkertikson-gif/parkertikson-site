@@ -1,0 +1,133 @@
+@import './tokens.css';
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(ellipse at top right, rgba(31,77,63,0.04), transparent 60%),
+    radial-gradient(ellipse at bottom left, rgba(45,74,62,0.05), transparent 60%);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.06 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 48px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── NAV ─── */
+nav.top {
+  border-bottom: 1px solid var(--rule);
+  padding: 18px 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+nav.top .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+nav.top a {
+  color: var(--ink);
+  text-decoration: none;
+}
+nav.top a:hover { color: var(--accent); }
+nav.top .links a { margin-left: 28px; }
+nav.top .brand {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 16px;
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+nav.top .links { display: flex; }
+
+/* ─── FOOTER (UNIFIED) ─── */
+footer.site {
+  border-top: 1px solid var(--rule);
+  padding: 40px 0 56px;
+  margin-top: 32px;
+}
+footer.site .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+footer.site .copy {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+footer.site .links {
+  display: flex;
+  gap: 24px;
+}
+footer.site .links a {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+}
+footer.site .links a:hover { color: var(--accent); }
+footer.site .colophon {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ─── BREADCRUMB (shared across listing/detail pages) ─── */
+.breadcrumb {
+  padding: 24px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.breadcrumb a { color: var(--muted); text-decoration: none; }
+.breadcrumb a:hover { color: var(--accent); }
+.breadcrumb .sep { margin: 0 10px; opacity: 0.5; }
+
+/* ─── SHARED KEYFRAMES ─── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 940px) {
+  .container { padding: 0 24px; }
+  nav.top .links { display: none; }
+}

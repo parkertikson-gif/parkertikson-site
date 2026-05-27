@@ -1,0 +1,11 @@
+---
+interface Props {
+  text: string;
+  label?: string;
+}
+const { text, label = 'Looking back' } = Astro.props;
+---
+<div class="reflection">
+  <div class="lbl">{label}</div>
+  <p set:html={text} />
+</div>

@@ -1,0 +1,18 @@
+---
+interface Course { slug: string; title: string; }
+interface Props {
+  degree: 'masters' | 'bachelors';
+  prev?: Course;
+  next?: Course;
+}
+const { degree, prev, next } = Astro.props;
+const base = degree === 'masters' ? '/masters' : '/bachelors';
+---
+<footer class="proj-nav">
+  {prev ? (
+    <a href={`${base}/${prev.slug}`}>← Previous · {prev.title}</a>
+  ) : <span />}
+  {next && (
+    <a href={`${base}/${next.slug}`} class="next">Next: <em>{next.title} →</em></a>
+  )}
+</footer>

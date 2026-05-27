@@ -1,0 +1,54 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/course/Breadcrumb.astro';
+import ProjectHeader from '../../components/course/ProjectHeader.astro';
+import Tldr from '../../components/course/Tldr.astro';
+import RoleCard from '../../components/course/RoleCard.astro';
+import Reflection from '../../components/course/Reflection.astro';
+import Downloads from '../../components/course/Downloads.astro';
+import ProjectNav from '../../components/course/ProjectNav.astro';
+import '../../styles/course.css';
+
+export async function getStaticPaths() {
+  const all = await getCollection('courses');
+  return all
+    .filter(e => e.data.degree === 'masters')
+    .map(e => ({
+      params: { slug: e.id.split('/').pop()! },
+      props: { entry: e },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const data = entry.data;
+
+const meta = [
+  { label: 'Course', value: data.title },
+  { label: 'Term', value: data.term },
+  ...(data.format ? [{ label: 'Format', value: data.format }] : []),
+  ...(data.discipline ? [{ label: 'Discipline', value: data.discipline }] : []),
+];
+
+const headline = data.headline ?? data.title;
+---
+<Layout title={`${data.title} — Parker Tikson`} description={data.description ?? data.deck}>
+  <Breadcrumb degree={data.degree} courseTitle={data.title} />
+
+  <ProjectHeader meta={meta} headline={headline} deck={data.deck} />
+
+  {data.tldr && <Tldr statement={data.tldr.statement} stats={data.tldr.stats} />}
+
+  {data.contribution && (
+    <RoleCard contribution={data.contribution} teammates={data.teammates} />
+  )}
+
+  <Content />
+
+  {data.reflection && <Reflection text={data.reflection} />}
+
+  {data.downloads && <Downloads downloads={data.downloads} />}
+
+  <ProjectNav degree={data.degree} prev={data.prevCourse} next={data.nextCourse} />
+</Layout>

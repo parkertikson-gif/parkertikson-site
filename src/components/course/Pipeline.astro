@@ -1,0 +1,11 @@
+---
+interface Props {
+  title?: string;
+  svg: string;
+}
+const { title = 'Data pipeline', svg } = Astro.props;
+---
+<div class="pipeline">
+  <div class="pipeline-title">{title}</div>
+  <Fragment set:html={svg} />
+</div>

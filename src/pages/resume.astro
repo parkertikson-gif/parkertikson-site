@@ -1,0 +1,241 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/resume.css';
+
+type EntryType = 'work' | 'education' | 'project';
+type SkillKey = 'python' | 'r' | 'ml' | 'causal' | 'gis' | 'policy' | 'research';
+
+interface Entry {
+  type: EntryType;
+  when: string;
+  title: string;
+  org: string;
+  body: string;
+  skills: SkillKey[];
+}
+
+const skillLabels: Record<SkillKey, string> = {
+  python: 'Python',
+  r: 'R',
+  ml: 'Machine learning',
+  causal: 'Causal inference',
+  gis: 'Geospatial',
+  policy: 'Policy analysis',
+  research: 'Stakeholder research',
+};
+
+const skillOrder: SkillKey[] = ['python', 'r', 'ml', 'causal', 'gis', 'policy', 'research'];
+
+const entries: Entry[] = [
+  {
+    type: 'work',
+    when: '2024 — now',
+    title: 'Graduate Researcher',
+    org: 'UC Berkeley · Energy & Resources Group · Berkeley, CA',
+    body: "Working alongside [Advisor's lab] on questions of distributed energy resource integration and the planning gaps that emerge as California's grid electrifies. My piece is the data layer — building feeder-level forecasting tools that help regulators and program administrators target investment more precisely.",
+    skills: ['python', 'ml', 'research', 'policy'],
+  },
+  {
+    type: 'work',
+    when: '2022 — 2024',
+    title: '[Job Title]',
+    org: '[Company] · [City]',
+    body: '[Two or three sentences describing what you actually did, what you owned, and what changed because you were there.]',
+    skills: ['python', 'research', 'policy'],
+  },
+  {
+    type: 'work',
+    when: 'Sum 2021',
+    title: '[Internship Title]',
+    org: '[Organization] · [City]',
+    body: '[Brief description of the internship and what you took from it.]',
+    skills: ['research', 'policy'],
+  },
+  {
+    type: 'education',
+    when: '2024 — 2026',
+    title: 'M.S., Energy & Resources',
+    org: 'UC Berkeley · Berkeley, CA',
+    body: 'Interdisciplinary degree spanning applied machine learning, causal inference, energy markets, and the political economy of climate policy.',
+    skills: ['python', 'r', 'ml', 'causal', 'gis'],
+  },
+  {
+    type: 'education',
+    when: '2018 — 2022',
+    title: 'B.A., Environmental Studies',
+    org: '[University] · [City]',
+    body: "[One sentence on the degree's character and your direction by the end.]",
+    skills: ['gis', 'policy'],
+  },
+  {
+    type: 'project',
+    when: 'Fall 2024',
+    title: 'PG&E Feeder Congestion Forecasting',
+    org: 'Data, Environment & Society · Team of 4',
+    body: "Random Forest forecast for feeder-level congestion across PG&E's distribution system. Owned EV-data pipeline and multi-class congestion-tier model.",
+    skills: ['python', 'ml'],
+  },
+  {
+    type: 'project',
+    when: 'Spring 2025',
+    title: 'EV Rebate Causal Analysis',
+    org: 'Causal Inference Lab',
+    body: "Difference-in-differences analysis of California's enhanced rebate program in low-income census tracts.",
+    skills: ['r', 'causal', 'policy'],
+  },
+  {
+    type: 'project',
+    when: 'Spring 2025',
+    title: 'Solar Curtailment & the Duck Curve',
+    org: 'Energy Markets & Regulation',
+    body: 'Geospatial analysis of when, where, and why California curtails clean electrons.',
+    skills: ['gis', 'policy'],
+  },
+];
+
+const typeCounts = entries.reduce<Record<EntryType, number>>((acc, e) => {
+  acc[e.type] = (acc[e.type] ?? 0) + 1;
+  return acc;
+}, { work: 0, education: 0, project: 0 });
+---
+<Layout title="Résumé — Parker Tikson" description="Interactive résumé — filter Parker Tikson's experience by type and skill." bodyClass="resume-page">
+
+  <header class="page">
+    <div class="h-tag">§ Résumé · Interactive</div>
+    <h1>Filter the path here by what you actually <em>care</em> about.</h1>
+    <p class="h-deck">
+      Tap a skill to see only the experiences where I used it.
+      Tap an entry to read the longer version.
+    </p>
+    <div class="h-actions">
+      <a class="btn primary" href="#">Download PDF résumé</a>
+      <a class="btn" href="mailto:parker_tikson@berkeley.edu">Email me</a>
+    </div>
+  </header>
+
+  <div class="filters">
+    <div class="filter-row">
+      <div class="filter-lbl">Filter by type</div>
+      <div class="pills" id="type-pills">
+        <button class="pill" type="button" data-filter-type="type" data-value="work">Work <span class="ct">{typeCounts.work}</span></button>
+        <button class="pill" type="button" data-filter-type="type" data-value="education">Education <span class="ct">{typeCounts.education}</span></button>
+        <button class="pill" type="button" data-filter-type="type" data-value="project">Project <span class="ct">{typeCounts.project}</span></button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <div class="filter-lbl">Filter by skill</div>
+      <div class="pills" id="skill-pills">
+        {skillOrder.map(key => (
+          <button class="pill" type="button" data-filter-type="skill" data-value={key}>{skillLabels[key]}</button>
+        ))}
+        <button class="clear" type="button" id="clear-btn">Clear all</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="entries-wrap">
+    <div class="entries-grid">
+
+      <div class="entries-side">
+        <div class="side-tag">§ Path</div>
+        <h2 class="side-h">{entries.length} entries.<br />Showing <span class="visible-count" id="visible-count">all</span>.</h2>
+        <div class="side-meta">
+          <span class="live">●</span> Click any row to expand<br />
+          Click skills to filter
+        </div>
+      </div>
+
+      <div class="entries" id="entries">
+        {entries.map(e => (
+          <div class="entry" data-type={e.type} data-skills={e.skills.join(',')}>
+            <div class="entry-head">
+              <div class="entry-when">{e.when}</div>
+              <div class="entry-title-block">
+                <div class="entry-title">{e.title}</div>
+                <div class="entry-org">{e.org}</div>
+              </div>
+              <div class="entry-toggle">+</div>
+            </div>
+            <div class="entry-body">
+              <p>{e.body}</p>
+              <div class="entry-skills">
+                {e.skills.map(s => (
+                  <span class="entry-skill" data-s={s}>{skillLabels[s]}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="empty" id="empty-state">
+        Nothing matches that combination — try removing a filter.
+      </div>
+
+    </div>
+  </section>
+
+</Layout>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.entry-head').forEach(h => {
+    h.addEventListener('click', () => h.parentElement?.classList.toggle('open'));
+  });
+
+  const state = { types: new Set<string>(), skills: new Set<string>() };
+  const entryEls = Array.from(document.querySelectorAll<HTMLElement>('.entry'));
+  const empty = document.getElementById('empty-state')!;
+  const visibleCount = document.getElementById('visible-count')!;
+  const total = entryEls.length;
+
+  function applyFilters() {
+    let visible = 0;
+    entryEls.forEach(e => {
+      const t = e.dataset.type!;
+      const s = (e.dataset.skills ?? '').split(',');
+
+      const typeOK = state.types.size === 0 || state.types.has(t);
+      const skillOK = state.skills.size === 0 ||
+                      [...state.skills].every(sk => s.includes(sk));
+
+      e.classList.remove('hidden', 'dim');
+      if (!typeOK || !skillOK) {
+        e.classList.add('hidden');
+      } else {
+        visible++;
+      }
+
+      e.querySelectorAll<HTMLElement>('.entry-skill').forEach(sp => {
+        sp.classList.toggle('match', state.skills.has(sp.dataset.s ?? ''));
+      });
+    });
+
+    visibleCount.textContent = visible === total ? 'all' :
+                               visible === 0 ? 'none' : `${visible} of ${total}`;
+    empty.classList.toggle('show', visible === 0);
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.pill').forEach(p => {
+    p.addEventListener('click', () => {
+      const filter = p.dataset.filterType!;
+      const value = p.dataset.value!;
+      const set = filter === 'type' ? state.types : state.skills;
+      if (set.has(value)) {
+        set.delete(value);
+        p.classList.remove('active');
+      } else {
+        set.add(value);
+        p.classList.add('active');
+      }
+      if (filter === 'skill') p.classList.toggle('skill', set.has(value));
+      applyFilters();
+    });
+  });
+
+  document.getElementById('clear-btn')!.addEventListener('click', () => {
+    state.types.clear();
+    state.skills.clear();
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active', 'skill'));
+    applyFilters();
+  });
+</script>

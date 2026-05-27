@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master's — Parker Tikson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #161915; --paper: #ffffff; --paper-2: #f4f4f1;
+    --rule: #1a1f1a; --muted: #5a6359; --accent: #1f4d3f;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter Tight', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--sans); font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at top right, rgba(31,77,63,0.04), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(74,63,45,0.05), transparent 60%);
+    background-attachment: fixed;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.06 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none; opacity: 0.5; z-index: 1; mix-blend-mode: multiply;
+  }
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 48px; position: relative; z-index: 2; }
+
+  /* nav */
+  nav.top {
+    border-bottom: 1px solid var(--rule); padding: 18px 0;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  nav.top .container { display: flex; justify-content: space-between; align-items: center; }
+  nav.top a { color: var(--ink); text-decoration: none; margin-left: 28px; }
+  nav.top a:hover { color: var(--accent); }
+  nav.top .brand { font-family: var(--serif); font-weight: 500; font-size: 16px; text-transform: none; letter-spacing: -0.01em; }
+
+  /* breadcrumb */
+  .breadcrumb {
+    padding: 24px 0 0;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+  }
+  .breadcrumb a { color: var(--muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--accent); }
+  .breadcrumb .sep { margin: 0 10px; opacity: 0.5; }
+
+  /* ─── HEADER ─── */
+  header.page {
+    padding: 40px 0 56px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .h-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 56px;
+    align-items: end;
+  }
+  .h-tag {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(48px, 6vw, 80px); line-height: 0.98;
+    letter-spacing: -0.025em; max-width: 14ch;
+  }
+  h1 em { font-style: italic; font-weight: 300; color: var(--accent); }
+  .h-deck {
+    margin-top: 22px;
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: 19px; color: var(--muted); max-width: 56ch;
+    line-height: 1.45;
+  }
+
+  .degree-card {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    padding: 28px 26px;
+  }
+  .degree-card .lbl {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  .degree-card dl {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .degree-card dt {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 3px;
+  }
+  .degree-card dd {
+    font-family: var(--serif); font-size: 16px;
+    font-weight: 500; line-height: 1.3;
+  }
+  .degree-card dd .sub {
+    font-style: italic; font-weight: 300; color: var(--muted);
+    font-size: 14px; display: block; margin-top: 1px;
+  }
+
+  /* ─── FILTER BAR ─── */
+  .filters {
+    padding: 28px 0 24px;
+    border-bottom: 1px solid rgba(26,31,26,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .filter-pills {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .pill {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
+    padding: 6px 12px; border: 1px solid rgba(26,31,26,0.25);
+    background: transparent; color: var(--ink);
+    cursor: pointer; transition: all 0.15s; user-select: none;
+  }
+  .pill:hover { border-color: var(--ink); }
+  .pill.active {
+    background: var(--accent); color: var(--paper);
+    border-color: var(--accent);
+  }
+  .filter-meta {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+  .filter-meta .count { color: var(--accent); font-weight: 500; }
+
+  /* ─── COURSES ─── */
+  .courses-wrap { padding: 8px 0 80px; }
+
+  .term-block { margin-top: 48px; }
+  .term-head {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 48px;
+    align-items: baseline;
+    padding-bottom: 18px;
+    margin-bottom: 0;
+  }
+  .term-tag {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    color: var(--accent); border-top: 2px solid var(--accent);
+    padding-top: 10px; text-transform: uppercase;
+  }
+  .term-h {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 26px; letter-spacing: -0.015em; line-height: 1.15;
+    display: flex; align-items: baseline; gap: 16px;
+    flex-wrap: wrap;
+  }
+  .term-h .meta {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .courses { display: flex; flex-direction: column; }
+
+  .course {
+    display: grid;
+    grid-template-columns: 180px 1fr 160px;
+    gap: 48px;
+    padding: 28px 0;
+    border-top: 1px solid rgba(26,31,26,0.12);
+    text-decoration: none; color: var(--ink);
+    transition: all 0.25s ease;
+    position: relative;
+    align-items: baseline;
+  }
+  .course:last-child { border-bottom: 1px solid rgba(26,31,26,0.12); }
+  .course::after {
+    content: '↗';
+    position: absolute; right: 0; top: 32px;
+    font-family: var(--mono); font-size: 16px;
+    color: var(--muted); opacity: 0;
+    transition: all 0.25s;
+  }
+  .course:hover {
+    padding-left: 12px;
+    background: linear-gradient(90deg, rgba(31,77,63,0.04), transparent 70%);
+  }
+  .course:hover::after { opacity: 1; color: var(--accent); }
+  .course:hover .c-title { color: var(--accent); }
+  .course.has-feature .c-feature { display: flex; }
+
+  .c-code {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--muted); letter-spacing: 0.05em;
+  }
+  .c-code .feat {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--accent); font-weight: 500;
+    border: 1px solid var(--accent);
+    padding: 2px 7px;
+    font-size: 9px; letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .c-body { display: flex; flex-direction: column; gap: 8px; }
+  .c-title {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 22px; line-height: 1.2; letter-spacing: -0.015em;
+    transition: color 0.2s;
+  }
+  .c-deck {
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: 15px; color: var(--muted);
+    max-width: 56ch; line-height: 1.45;
+  }
+  .c-tags {
+    display: flex; flex-wrap: wrap; gap: 5px;
+    margin-top: 4px;
+  }
+  .c-tag {
+    font-family: var(--mono); font-size: 10px;
+    color: var(--muted); letter-spacing: 0.04em;
+  }
+  .c-tag::after { content: ' ·'; margin-left: 3px; }
+  .c-tag:last-child::after { content: ''; }
+
+  .c-meta {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); text-align: right;
+    line-height: 1.7;
+  }
+  .c-meta .grade { color: var(--ink); font-weight: 500; }
+  .c-meta .deliv { display: block; margin-top: 6px; font-style: italic; text-transform: none; letter-spacing: 0; font-family: var(--serif); font-size: 13px; }
+
+  /* hidden when filtered */
+  .course.hidden { display: none; }
+  .term-block.empty { display: none; }
+
+  /* ─── SUMMARY BAND ─── */
+  .summary {
+    margin-top: 80px;
+    padding: 48px 56px;
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+  }
+  .summary::before {
+    content: 'IN AGGREGATE';
+    position: absolute; top: 14px; left: 56px;
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.15em; color: var(--accent);
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin-top: 28px;
+  }
+  .summary .stat .num {
+    font-family: var(--serif); font-weight: 300;
+    font-size: 56px; line-height: 1;
+    letter-spacing: -0.04em; color: var(--paper);
+  }
+  .summary .stat .num .unit {
+    font-size: 22px; color: rgba(255,255,255,0.6); margin-left: 4px;
+  }
+  .summary .stat .lbl {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.55); margin-top: 10px; line-height: 1.4;
+  }
+@media (max-width: 880px) {
+    .container { padding: 0 24px; }
+    .h-grid { grid-template-columns: 1fr; gap: 32px; }
+    .term-head { grid-template-columns: 1fr; gap: 8px; }
+    .course { grid-template-columns: 1fr; gap: 12px; padding-right: 24px; }
+    .c-meta { text-align: left; }
+    .course::after { display: none; }
+    .summary { padding: 36px 28px; }
+    .summary-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .summary .stat .num { font-size: 42px; }
+  }
+
+  /* ─── FOOTER (UNIFIED) ─── */
+  footer.site {
+    border-top: 1px solid var(--rule);
+    padding: 40px 0 56px;
+    margin-top: 32px;
+  }
+  footer.site .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  footer.site .copy {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+  footer.site .links {
+    display: flex;
+    gap: 24px;
+  }
+  footer.site .links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  footer.site .links a:hover { color: var(--accent); }
+  footer.site .colophon {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="container">
+    <a class="brand" href="/">Parker Tikson</a>
+    <div class="links">
+      <a href="/masters">Master's</a>
+      <a href="/bachelors">Bachelor's</a>
+      <a href="/about">About</a>
+      <a href="/photo">Photo</a>
+      <a href="/resume">Résumé</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="breadcrumb">
+    <a href="#">Home</a>
+    <span class="sep">/</span>
+    <span>Master's</span>
+  </div>
+
+  <header class="page">
+    <div class="h-grid">
+      <div>
+        <div class="h-tag">§ Master's coursework</div>
+        <h1>Two years, fourteen courses, one <em>through-line</em>.</h1>
+        <p class="h-deck">
+          A working archive of the projects and papers I produced while studying energy &amp; resources
+          at Berkeley. Click any course to see the final deliverable, my role, and what I took from it.
+        </p>
+      </div>
+
+      <aside class="degree-card">
+        <div class="lbl">The degree</div>
+        <dl>
+          <dt>Program</dt>
+          <dd>M.S., Energy &amp; Resources <span class="sub">UC Berkeley · ERG</span></dd>
+          <dt>Span</dt>
+          <dd>2024 — 2026 <span class="sub">Four semesters</span></dd>
+          <dt>Focus</dt>
+          <dd>Distribution-grid analytics <span class="sub">+ climate policy</span></dd>
+        </dl>
+      </aside>
+    </div>
+  </header>
+
+  <!-- ─── FILTERS ─── -->
+  <div class="filters">
+    <div class="filter-pills" id="pills">
+      <button class="pill active" data-filter="all">All</button>
+      <button class="pill" data-filter="ml">Machine learning</button>
+      <button class="pill" data-filter="causal">Causal inference</button>
+      <button class="pill" data-filter="gis">Geospatial</button>
+      <button class="pill" data-filter="policy">Policy</button>
+      <button class="pill" data-filter="markets">Markets</button>
+    </div>
+    <div class="filter-meta">
+      Showing <span class="count" id="count">14</span> courses
+    </div>
+  </div>
+
+  <section class="courses-wrap">
+
+    <!-- ─── FALL 2024 ─── -->
+    <div class="term-block" data-term>
+      <div class="term-head">
+        <div class="term-tag">§ Term 01</div>
+        <h2 class="term-h">Fall 2024 <span class="meta">First semester · 4 courses</span></h2>
+      </div>
+      <div class="courses">
+
+        <a class="course has-feature" href="#" data-tags="ml,policy">
+          <div class="c-code">
+            ERG 244<br>
+            <span class="feat">Featured</span>
+          </div>
+          <div class="c-body">
+            <div class="c-title">Data, Environment &amp; Society</div>
+            <div class="c-deck">A Random Forest forecast for feeder-level congestion across PG&amp;E's territory, accurate to within 240 kW on public data alone.</div>
+            <div class="c-tags">
+              <span class="c-tag">Python</span>
+              <span class="c-tag">scikit-learn</span>
+              <span class="c-tag">Energy systems</span>
+              <span class="c-tag">Team of 4</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">A</span><br>
+            4 units
+            <span class="deliv">Notebook + report</span>
+          </div>
+        </a>
+
+        <a class="course" href="#" data-tags="policy">
+          <div class="c-code">PUBPOL 251</div>
+          <div class="c-body">
+            <div class="c-title">Climate Policy &amp; Politics</div>
+            <div class="c-deck">[One-line description of what the course was, what you produced, and what your final paper or project was about.]</div>
+            <div class="c-tags">
+              <span class="c-tag">Policy analysis</span>
+              <span class="c-tag">Solo paper</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">A</span><br>
+            4 units
+            <span class="deliv">Research paper</span>
+          </div>
+        </a>
+
+        <a class="course" href="#" data-tags="markets">
+          <div class="c-code">ERG 220</div>
+          <div class="c-body">
+            <div class="c-title">Energy &amp; Society</div>
+            <div class="c-deck">[One-line description.]</div>
+            <div class="c-tags">
+              <span class="c-tag">Systems thinking</span>
+              <span class="c-tag">Seminar</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">A</span><br>
+            3 units
+            <span class="deliv">Final essay</span>
+          </div>
+        </a>
+
+        <a class="course" href="#" data-tags="ml">
+          <div class="c-code">STAT 215A</div>
+          <div class="c-body">
+            <div class="c-title">Applied Statistics</div>
+            <div class="c-deck">[One-line description.]</div>
+            <div class="c-tags">
+              <span class="c-tag">R</span>
+              <span class="c-tag">Statistical modeling</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">A−</span><br>
+            4 units
+            <span class="deliv">Lab portfolio</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ─── SPRING 2025 ─── -->
+    <div class="term-block" data-term>
+      <div class="term-head">
+        <div class="term-tag">§ Term 02</div>
+        <h2 class="term-h">Spring 2025 <span class="meta">Second semester · 4 courses</span></h2>
+      </div>
+      <div class="courses">
+
+        <a class="course has-feature" href="#" data-tags="causal,policy">
+          <div class="c-code">
+            PUBPOL 271<br>
+            <span class="feat">Featured</span>
+          </div>
+          <div class="c-body">
+            <div class="c-title">Causal Inference Lab</div>
+            <div class="c-deck">Difference-in-differences analysis of California's enhanced rebate program in low-income census tracts — and what it actually moved.</div>
+            <div class="c-tags">
+              <span class="c-tag">R</span>
+              <span class="c-tag">Causal inference</span>
+              <span class="c-tag">Policy evaluation</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">A</span><br>
+            4 units
+            <span class="deliv">Research paper</span>
+          </div>
+        </a>
+
+        <a class="course has-feature" href="#" data-tags="gis,markets">
+          <div class="c-code">
+            ERG 275<br>
+            <span class="feat">Featured</span>
+          </div>
+          <div class="c-body">
+            <div class="c-title">Energy Markets &amp; Regulation</div>
+            <div class="c-deck">A geospatial study of when, where, and why California is throwing away clean electrons — and which feeders pay the price.</div>
+            <div class="c-tags">
+              <span class="c-tag">QGIS</span>
+              <span class="c-tag">CAISO data</span>
+              <span class="c-tag">Solo project</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">A</span><br>
+            4 units
+            <span class="deliv">Geospatial report</span>
+          </div>
+        </a>
+
+        <a class="course" href="#" data-tags="ml">
+          <div class="c-code">CS 189</div>
+          <div class="c-body">
+            <div class="c-title">Machine Learning</div>
+            <div class="c-deck">[One-line description.]</div>
+            <div class="c-tags">
+              <span class="c-tag">Python</span>
+              <span class="c-tag">PyTorch</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">A−</span><br>
+            4 units
+            <span class="deliv">Problem sets</span>
+          </div>
+        </a>
+
+        <a class="course" href="#" data-tags="policy">
+          <div class="c-code">CITRIS 230</div>
+          <div class="c-body">
+            <div class="c-title">Tech &amp; Public Interest</div>
+            <div class="c-deck">[One-line description.]</div>
+            <div class="c-tags">
+              <span class="c-tag">Discussion</span>
+              <span class="c-tag">Op-ed</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">A</span><br>
+            3 units
+            <span class="deliv">Public-facing piece</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ─── FALL 2025 ─── -->
+    <div class="term-block" data-term>
+      <div class="term-head">
+        <div class="term-tag">§ Term 03</div>
+        <h2 class="term-h">Fall 2025 <span class="meta">Third semester · 3 courses</span></h2>
+      </div>
+      <div class="courses">
+
+        <a class="course" href="#" data-tags="causal,ml">
+          <div class="c-code">STAT 256</div>
+          <div class="c-body">
+            <div class="c-title">Bayesian Methods for Policy</div>
+            <div class="c-deck">[One-line description of what you built — likely a Bayesian model on some policy-relevant question.]</div>
+            <div class="c-tags">
+              <span class="c-tag">R</span>
+              <span class="c-tag">Stan</span>
+              <span class="c-tag">MCMC</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">A</span><br>
+            4 units
+            <span class="deliv">Modeling notebook</span>
+          </div>
+        </a>
+
+        <a class="course" href="#" data-tags="gis">
+          <div class="c-code">ESPM 408</div>
+          <div class="c-body">
+            <div class="c-title">Advanced Spatial Analysis</div>
+            <div class="c-deck">[One-line description.]</div>
+            <div class="c-tags">
+              <span class="c-tag">QGIS</span>
+              <span class="c-tag">PostGIS</span>
+              <span class="c-tag">Remote sensing</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">A</span><br>
+            3 units
+            <span class="deliv">Mapping portfolio</span>
+          </div>
+        </a>
+
+        <a class="course" href="#" data-tags="policy">
+          <div class="c-code">ERG 290</div>
+          <div class="c-body">
+            <div class="c-title">Thesis Workshop I</div>
+            <div class="c-deck">Setting up the literature review and methodology for the master's thesis.</div>
+            <div class="c-tags">
+              <span class="c-tag">Research design</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">P</span><br>
+            2 units
+            <span class="deliv">Prospectus</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ─── SPRING 2026 ─── -->
+    <div class="term-block" data-term>
+      <div class="term-head">
+        <div class="term-tag">§ Term 04</div>
+        <h2 class="term-h">Spring 2026 <span class="meta">Fourth semester · 3 courses</span></h2>
+      </div>
+      <div class="courses">
+
+        <a class="course" href="#" data-tags="markets,policy">
+          <div class="c-code">ERG 280</div>
+          <div class="c-body">
+            <div class="c-title">Electricity Markets in Transition</div>
+            <div class="c-deck">[One-line description.]</div>
+            <div class="c-tags">
+              <span class="c-tag">CAISO</span>
+              <span class="c-tag">Wholesale markets</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">In progress</span><br>
+            4 units
+          </div>
+        </a>
+
+        <a class="course" href="#" data-tags="ml">
+          <div class="c-code">INFO 256</div>
+          <div class="c-body">
+            <div class="c-title">Applied NLP</div>
+            <div class="c-deck">[One-line description.]</div>
+            <div class="c-tags">
+              <span class="c-tag">Python</span>
+              <span class="c-tag">Hugging Face</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">In progress</span><br>
+            3 units
+          </div>
+        </a>
+
+        <a class="course" href="#" data-tags="policy">
+          <div class="c-code">ERG 291</div>
+          <div class="c-body">
+            <div class="c-title">Thesis Workshop II</div>
+            <div class="c-deck">Writing the thesis. Topic: [thesis title].</div>
+            <div class="c-tags">
+              <span class="c-tag">Independent research</span>
+            </div>
+          </div>
+          <div class="c-meta">
+            <span class="grade">In progress</span><br>
+            4 units
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ─── SUMMARY ─── -->
+  <section class="summary">
+    <div class="summary-grid">
+      <div class="stat"><div class="num">14</div><div class="lbl">Courses completed<br>or in progress</div></div>
+      <div class="stat"><div class="num">3</div><div class="lbl">Featured projects<br>with full writeups</div></div>
+      <div class="stat"><div class="num">52<span class="unit">u</span></div><div class="lbl">Units toward<br>the degree</div></div>
+      <div class="stat"><div class="num">2026</div><div class="lbl">Expected<br>graduation</div></div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site">
+  <div class="container">
+    <div class="copy">© 2026 Parker Tikson. Work shown with permission of collaborators.</div>
+    <div class="links">
+      <a href="mailto:#">Email</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">GitHub</a>
+      <a href="/resume">Résumé</a>
+    </div>
+    <div class="colophon">Set in Fraunces &amp; Inter Tight. Built with care.</div>
+  </div>
+</footer>
+
+<script>
+  const pills = document.querySelectorAll('.pill');
+  const courses = document.querySelectorAll('.course');
+  const terms = document.querySelectorAll('.term-block');
+  const countEl = document.getElementById('count');
+
+  pills.forEach(p => {
+    p.addEventListener('click', () => {
+      pills.forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      const filter = p.dataset.filter;
+
+      let visible = 0;
+      courses.forEach(c => {
+        const tags = (c.dataset.tags || '').split(',');
+        const show = filter === 'all' || tags.includes(filter);
+        c.classList.toggle('hidden', !show);
+        if (show) visible++;
+      });
+
+      // Hide empty term blocks
+      terms.forEach(t => {
+        const hasVisible = t.querySelectorAll('.course:not(.hidden)').length > 0;
+        t.classList.toggle('empty', !hasVisible);
+      });
+
+      countEl.textContent = visible;
+    });
+  });
+</script>
+
+</body>
+</html>

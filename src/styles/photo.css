@@ -1,0 +1,192 @@
+body.photo-page .container { max-width: 1280px; }
+
+/* ─── HEADER ─── */
+.photo-page header.page {
+  padding: 56px 0 40px;
+}
+.h-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 24px;
+  border-bottom: 1px solid rgba(26,31,26,0.18);
+  padding-bottom: 32px;
+}
+.h-left {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.h-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.photo-page header.page h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+.photo-page header.page h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--muted);
+}
+.h-right {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  text-align: right;
+  line-height: 1.6;
+}
+.h-right .ct { color: var(--ink); }
+.h-prose {
+  margin-top: 28px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 18px;
+  color: var(--muted);
+  max-width: 50ch;
+  line-height: 1.45;
+}
+
+/* ─── MOSAIC ─── */
+.mosaic {
+  padding: 48px 0 80px;
+  column-count: 3;
+  column-gap: 16px;
+}
+@media (max-width: 1100px) { .mosaic { column-count: 2; } }
+@media (max-width: 640px)  { .mosaic { column-count: 1; } }
+
+.photo {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  background: var(--paper-2);
+  border: 1px solid rgba(26,31,26,0.12);
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+}
+.photo:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(22,25,21,0.12);
+}
+.photo .frame {
+  width: 100%;
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+.photo .frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+  pointer-events: none;
+}
+.photo .placeholder {
+  width: 100%;
+  display: block;
+}
+
+/* ─── LIGHTBOX ─── */
+.lb {
+  position: fixed;
+  inset: 0;
+  background: rgba(22,25,21,0.94);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  padding: 32px;
+}
+.lb.open { display: flex; }
+.lb-stage {
+  max-width: 90vw;
+  max-height: 90vh;
+  background: var(--paper-2);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lb-stage > * {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: block;
+}
+.lb-meta {
+  position: absolute;
+  bottom: 24px;
+  left: 32px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+.lb-close {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+}
+.lb-close:hover { color: var(--paper); }
+
+/* ─── COLOPHON ─── */
+.colophon-strip {
+  border-top: 1px solid var(--rule);
+  padding: 36px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+}
+.col-item .lbl {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: block;
+}
+.col-item .val {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.4;
+}
+.col-item .val .sub {
+  display: block;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 880px) {
+  body.photo-page .container { padding: 0 24px; }
+  .colophon-strip { grid-template-columns: 1fr; gap: 20px; }
+  .h-row { flex-direction: column; align-items: flex-start; }
+  .h-right { text-align: left; }
+}

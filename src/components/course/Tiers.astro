@@ -1,0 +1,20 @@
+---
+interface Tier {
+  level: 'low' | 'med' | 'high';
+  pill: string;
+  range: string;
+  qual?: string;
+  description: string;
+}
+interface Props { tiers: Tier[]; }
+const { tiers } = Astro.props;
+---
+<div class="tiers">
+  {tiers.map(t => (
+    <div class={`tier ${t.level}`}>
+      <span class="pill">{t.pill}</span>
+      <div class="range" set:html={`${t.range}${t.qual ? ` <span class="qual">${t.qual}</span>` : ''}`} />
+      <div class="desc">{t.description}</div>
+    </div>
+  ))}
+</div>

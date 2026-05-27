@@ -1,0 +1,124 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/masters.css';
+import '../../styles/bachelors.css';
+
+interface OverviewCourse {
+  code: string;
+  title: string;
+  term: string;
+  deck: string;
+}
+
+const termOrder = [
+  { name: 'Fall 2020', ordinal: 'Junior fall' },
+  { name: 'Spring 2021', ordinal: 'Junior spring' },
+  { name: 'Fall 2021', ordinal: 'Senior fall' },
+  { name: 'Spring 2022', ordinal: 'Senior spring' },
+];
+
+const courses: OverviewCourse[] = [
+  { code: 'ES 101', title: 'Sustainable Systems', term: 'Fall 2020',
+    deck: '[One- to two-sentence description of the course and the way it shaped your thinking.]' },
+  { code: 'ECON 145', title: 'Environmental Economics', term: 'Spring 2021',
+    deck: '[One- to two-sentence description.]' },
+  { code: 'GEOG 175', title: 'GIS Foundations', term: 'Fall 2021',
+    deck: '[One- to two-sentence description.]' },
+  { code: 'LAEP 1', title: 'Introduction to Environmental Design', term: 'Fall 2021',
+    deck: '[One- to two-sentence description.]' },
+  { code: 'ES 140', title: 'Conservation Biology', term: 'Spring 2022',
+    deck: '[One- to two-sentence description.]' },
+  { code: 'ES H195', title: 'Senior Thesis', term: 'Spring 2022',
+    deck: '[One- to two-sentence description of the thesis question and what you produced.]' },
+];
+
+const grouped = termOrder
+  .map((term, i) => ({
+    name: term.name,
+    ordinal: term.ordinal,
+    index: i + 1,
+    courses: courses.filter(c => c.term === term.name),
+  }))
+  .filter(g => g.courses.length > 0);
+---
+<Layout title="Bachelor's — Parker Tikson" description="The undergraduate foundation behind the master's work — an overview of selected environmental studies coursework.">
+
+  <div class="breadcrumb">
+    <a href="/">Home</a>
+    <span class="sep">/</span>
+    <span>Bachelor's</span>
+  </div>
+
+  <header class="page">
+    <div class="h-grid">
+      <div>
+        <div class="h-tag">§ Bachelor's coursework</div>
+        <h1>The undergraduate <em>foundation</em>.</h1>
+        <p class="h-deck">
+          A short overview of the courses that shaped how I read systems, before the master's gave me tools to measure them.
+        </p>
+      </div>
+
+      <aside class="degree-card">
+        <div class="lbl">The degree</div>
+        <dl>
+          <dt>Program</dt>
+          <dd>B.A., Environmental Studies <span class="sub">University of [School]</span></dd>
+          <dt>Span</dt>
+          <dd>2018 — 2022 <span class="sub">Selected from final two years</span></dd>
+          <dt>Focus</dt>
+          <dd>Systems thinking <span class="sub">+ environmental policy</span></dd>
+        </dl>
+      </aside>
+    </div>
+  </header>
+
+  <section class="overview-intro">
+    <p>
+      [Two or three sentences here, in your voice, positioning the undergrad
+      degree as the foundational thinking behind the technical work that came
+      after — what it taught you to ask, how it shaped the way you read systems.]
+    </p>
+  </section>
+
+  <section class="courses-wrap">
+    {grouped.map(group => (
+      <div class="term-block">
+        <div class="term-head">
+          <div class="term-tag">§ Term {String(group.index).padStart(2, '0')}</div>
+          <h2 class="term-h">
+            {group.name}
+            <span class="meta">{group.ordinal} · {group.courses.length} {group.courses.length === 1 ? 'course' : 'courses'}</span>
+          </h2>
+        </div>
+        <div class="overview-courses">
+          {group.courses.map(c => (
+            <div class="overview-course">
+              <div class="c-code">{c.code}</div>
+              <div class="c-body">
+                <div class="c-title">{c.title}</div>
+                <div class="c-deck">{c.deck}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <section class="gave-me">
+    <div class="tag">§ What this gave me</div>
+    <div class="body">
+      <p>
+        [Two or three sentences on what the undergrad actually left you with —
+        not a credential list, but the <em>habits of attention</em> that still
+        show up in the master's work.]
+      </p>
+      <p>
+        [Optional second paragraph if there's a specific thread worth naming —
+        a course, a professor, a question that's still open.]
+      </p>
+    </div>
+  </section>
+
+</Layout>

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Résumé — Parker Tikson · Interactive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #161915; --paper: #ffffff; --paper-2: #f4f4f1;
+    --rule: #1a1f1a; --muted: #5a6359; --accent: #1f4d3f;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter Tight', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--sans); font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at top right, rgba(31,77,63,0.04), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(45,74,62,0.05), transparent 60%);
+    background-attachment: fixed;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.06 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none; opacity: 0.5; z-index: 1; mix-blend-mode: multiply;
+  }
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 48px; position: relative; z-index: 2; }
+
+  /* nav */
+  nav.top {
+    border-bottom: 1px solid var(--rule); padding: 18px 0;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  nav.top .container { display: flex; justify-content: space-between; align-items: center; }
+  nav.top a { color: var(--ink); text-decoration: none; margin-left: 28px; }
+  nav.top a:hover { color: var(--accent); }
+  nav.top .brand { font-family: var(--serif); font-weight: 500; font-size: 16px; text-transform: none; letter-spacing: -0.01em; }
+
+  header.page { padding: 56px 0 40px; border-bottom: 1px solid var(--rule); }
+  .h-tag {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(40px, 5vw, 64px); line-height: 1.02;
+    letter-spacing: -0.025em; max-width: 18ch;
+  }
+  h1 em { font-style: italic; font-weight: 300; color: var(--accent); }
+  .h-deck {
+    margin-top: 22px;
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: 19px; color: var(--muted); max-width: 60ch;
+  }
+  .h-actions { margin-top: 32px; display: flex; gap: 14px; }
+  .btn {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 12px 18px; cursor: pointer;
+    border: 1px solid var(--rule); text-decoration: none; color: var(--ink);
+    transition: all 0.2s; background: transparent;
+  }
+  .btn:hover { background: var(--ink); color: var(--paper); }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+
+  /* ─── FILTER BAR ─── */
+  .filters {
+    padding: 32px 0 20px;
+    border-bottom: 1px solid rgba(26,32,28,0.15);
+    position: sticky; top: 0;
+    background: var(--paper);
+    z-index: 10;
+  }
+  .filter-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .filter-lbl {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .filter-lbl .count { color: var(--accent); margin-left: 8px; font-weight: 500; }
+  .pills {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .pill {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
+    padding: 7px 13px; border: 1px solid rgba(26,32,28,0.25);
+    background: transparent; color: var(--ink);
+    cursor: pointer; transition: all 0.15s;
+    user-select: none;
+  }
+  .pill:hover { border-color: var(--ink); }
+  .pill.active {
+    background: var(--ink); color: var(--paper);
+    border-color: var(--ink);
+  }
+  .pill.active.skill { background: var(--accent); border-color: var(--accent); }
+  .pill .ct {
+    margin-left: 6px;
+    color: var(--muted); font-size: 10px;
+  }
+  .pill.active .ct { color: rgba(255,255,255,0.7); }
+  .clear {
+    margin-left: 8px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+    background: none; border: none; cursor: pointer; padding: 6px 0;
+    text-decoration: underline; text-underline-offset: 3px;
+  }
+  .clear:hover { color: var(--accent); }
+
+  /* ─── ENTRIES ─── */
+  .entries-wrap { padding: 40px 0 80px; }
+  .entries-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 56px;
+  }
+  .entries-side {
+    position: sticky; top: 120px;
+    align-self: start;
+  }
+  .side-tag {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    color: var(--accent); border-top: 2px solid var(--accent);
+    padding-top: 10px; margin-bottom: 12px; text-transform: uppercase;
+  }
+  .side-h {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 24px; letter-spacing: -0.015em; line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .side-meta {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    line-height: 1.6;
+  }
+  .side-meta .live {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .entries { display: flex; flex-direction: column; gap: 4px; }
+
+  .entry {
+    border: 1px solid rgba(26,32,28,0.15);
+    background: var(--paper-2);
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  .entry.hidden {
+    opacity: 0.25;
+    filter: grayscale(0.6);
+  }
+  .entry.dim {
+    opacity: 0.45;
+  }
+
+  .entry-head {
+    padding: 22px 26px;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 24px;
+    align-items: center;
+    transition: background 0.2s;
+  }
+  .entry-head:hover { background: rgba(255,255,255,0.4); }
+  .entry-when {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .entry-title-block {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .entry-title {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 19px; letter-spacing: -0.01em; line-height: 1.25;
+  }
+  .entry-org {
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: 14px; color: var(--muted);
+  }
+  .entry-toggle {
+    font-family: var(--mono); font-size: 14px; color: var(--muted);
+    transition: transform 0.25s;
+  }
+  .entry.open .entry-toggle { transform: rotate(45deg); color: var(--accent); }
+
+  .entry-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    padding: 0 26px;
+  }
+  .entry.open .entry-body {
+    max-height: 800px;
+    padding: 8px 26px 26px;
+  }
+  .entry-body p {
+    font-family: var(--serif); font-size: 16px; line-height: 1.6;
+    margin-bottom: 12px; max-width: 60ch;
+  }
+  .entry-skills {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 14px;
+  }
+  .entry-skill {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.04em;
+    padding: 4px 9px; border: 1px solid rgba(26,32,28,0.25);
+    color: var(--muted); background: var(--paper);
+  }
+  .entry-skill.match {
+    color: var(--accent); border-color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* type strip on left */
+  .entry { position: relative; }
+  .entry::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--muted);
+  }
+  .entry[data-type="work"]::before { background: var(--accent); }
+  .entry[data-type="education"]::before { background: var(--ink); }
+  .entry[data-type="project"]::before { background: #2d4a3e; }
+
+  /* empty state */
+  .empty {
+    padding: 48px;
+    text-align: center;
+    border: 1px dashed rgba(26,32,28,0.25);
+    font-family: var(--serif); font-style: italic;
+    color: var(--muted); font-size: 17px;
+    display: none;
+  }
+  .empty.show { display: block; }
+@media (max-width: 880px) {
+    .container { padding: 0 24px; }
+    .filter-row, .entries-grid { grid-template-columns: 1fr; gap: 16px; }
+    .entries-side { position: static; }
+    .entry-head { grid-template-columns: 1fr auto; gap: 12px; }
+    .entry-when { grid-column: 1 / -1; }
+  }
+
+  /* ─── FOOTER (UNIFIED) ─── */
+  footer.site {
+    border-top: 1px solid var(--rule);
+    padding: 40px 0 56px;
+    margin-top: 32px;
+  }
+  footer.site .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  footer.site .copy {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+  footer.site .links {
+    display: flex;
+    gap: 24px;
+  }
+  footer.site .links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  footer.site .links a:hover { color: var(--accent); }
+  footer.site .colophon {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="container">
+    <a class="brand" href="/">Parker Tikson</a>
+    <div class="links">
+      <a href="/masters">Master's</a>
+      <a href="/bachelors">Bachelor's</a>
+      <a href="/about">About</a>
+      <a href="/photo">Photo</a>
+      <a href="/resume">Résumé</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <header class="page">
+    <div class="h-tag">§ Résumé · Interactive</div>
+    <h1>Filter the path here by what you actually <em>care</em> about.</h1>
+    <p class="h-deck">
+      Tap a skill to see only the experiences where I used it.
+      Tap an entry to read the longer version.
+    </p>
+    <div class="h-actions">
+      <a class="btn primary" href="#">Download PDF résumé</a>
+      <a class="btn" href="#">Email me</a>
+    </div>
+  </header>
+
+  <div class="filters">
+    <div class="filter-row">
+      <div class="filter-lbl">Filter by type <span class="count" id="type-count"></span></div>
+      <div class="pills" id="type-pills">
+        <button class="pill" data-filter-type="type" data-value="work">Work <span class="ct">3</span></button>
+        <button class="pill" data-filter-type="type" data-value="education">Education <span class="ct">2</span></button>
+        <button class="pill" data-filter-type="type" data-value="project">Project <span class="ct">3</span></button>
+      </div>
+    </div>
+    <div class="filter-row" style="margin-top: 14px;">
+      <div class="filter-lbl">Filter by skill</div>
+      <div class="pills" id="skill-pills">
+        <button class="pill" data-filter-type="skill" data-value="python">Python</button>
+        <button class="pill" data-filter-type="skill" data-value="r">R</button>
+        <button class="pill" data-filter-type="skill" data-value="ml">Machine learning</button>
+        <button class="pill" data-filter-type="skill" data-value="causal">Causal inference</button>
+        <button class="pill" data-filter-type="skill" data-value="gis">Geospatial</button>
+        <button class="pill" data-filter-type="skill" data-value="policy">Policy analysis</button>
+        <button class="pill" data-filter-type="skill" data-value="research">Stakeholder research</button>
+        <button class="clear" id="clear-btn">Clear all</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="entries-wrap">
+    <div class="entries-grid">
+
+      <div class="entries-side">
+        <div class="side-tag">§ Path</div>
+        <h2 class="side-h">8 entries.<br>Showing <span id="visible-count" style="color:var(--accent);font-style:italic;">all</span>.</h2>
+        <div class="side-meta">
+          <span class="live">●</span> Click any row to expand<br>
+          Click skills to filter
+        </div>
+      </div>
+
+      <div class="entries" id="entries">
+
+        <div class="entry" data-type="work" data-skills="python,ml,research,policy">
+          <div class="entry-head">
+            <div class="entry-when">2024 — now</div>
+            <div class="entry-title-block">
+              <div class="entry-title">Graduate Researcher</div>
+              <div class="entry-org">UC Berkeley · Energy &amp; Resources Group · Berkeley, CA</div>
+            </div>
+            <div class="entry-toggle">+</div>
+          </div>
+          <div class="entry-body">
+            <p>
+              Working alongside [Advisor's lab] on questions of distributed energy resource
+              integration and the planning gaps that emerge as California's grid electrifies.
+              My piece is the data layer — building feeder-level forecasting tools that help
+              regulators and program administrators target investment more precisely.
+            </p>
+            <div class="entry-skills">
+              <span class="entry-skill" data-s="python">Python</span>
+              <span class="entry-skill" data-s="ml">Machine learning</span>
+              <span class="entry-skill" data-s="research">Stakeholder research</span>
+              <span class="entry-skill" data-s="policy">Policy analysis</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="entry" data-type="work" data-skills="python,research,policy">
+          <div class="entry-head">
+            <div class="entry-when">2022 — 2024</div>
+            <div class="entry-title-block">
+              <div class="entry-title">[Job Title]</div>
+              <div class="entry-org">[Company] · [City]</div>
+            </div>
+            <div class="entry-toggle">+</div>
+          </div>
+          <div class="entry-body">
+            <p>
+              [Two or three sentences describing what you actually did, what you owned, and
+              what changed because you were there.]
+            </p>
+            <div class="entry-skills">
+              <span class="entry-skill" data-s="python">Python</span>
+              <span class="entry-skill" data-s="research">Stakeholder research</span>
+              <span class="entry-skill" data-s="policy">Policy analysis</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="entry" data-type="work" data-skills="research,policy">
+          <div class="entry-head">
+            <div class="entry-when">Sum 2021</div>
+            <div class="entry-title-block">
+              <div class="entry-title">[Internship Title]</div>
+              <div class="entry-org">[Organization] · [City]</div>
+            </div>
+            <div class="entry-toggle">+</div>
+          </div>
+          <div class="entry-body">
+            <p>[Brief description of the internship and what you took from it.]</p>
+            <div class="entry-skills">
+              <span class="entry-skill" data-s="research">Stakeholder research</span>
+              <span class="entry-skill" data-s="policy">Policy analysis</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="entry" data-type="education" data-skills="python,r,ml,causal,gis">
+          <div class="entry-head">
+            <div class="entry-when">2024 — 2026</div>
+            <div class="entry-title-block">
+              <div class="entry-title">M.S., Energy &amp; Resources</div>
+              <div class="entry-org">UC Berkeley · Berkeley, CA</div>
+            </div>
+            <div class="entry-toggle">+</div>
+          </div>
+          <div class="entry-body">
+            <p>
+              Interdisciplinary degree spanning applied machine learning, causal inference,
+              energy markets, and the political economy of climate policy.
+            </p>
+            <div class="entry-skills">
+              <span class="entry-skill" data-s="python">Python</span>
+              <span class="entry-skill" data-s="r">R</span>
+              <span class="entry-skill" data-s="ml">Machine learning</span>
+              <span class="entry-skill" data-s="causal">Causal inference</span>
+              <span class="entry-skill" data-s="gis">Geospatial</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="entry" data-type="education" data-skills="gis,policy">
+          <div class="entry-head">
+            <div class="entry-when">2018 — 2022</div>
+            <div class="entry-title-block">
+              <div class="entry-title">B.A., Environmental Studies</div>
+              <div class="entry-org">[University] · [City]</div>
+            </div>
+            <div class="entry-toggle">+</div>
+          </div>
+          <div class="entry-body">
+            <p>
+              [One sentence on the degree's character and your direction by the end.]
+            </p>
+            <div class="entry-skills">
+              <span class="entry-skill" data-s="gis">Geospatial</span>
+              <span class="entry-skill" data-s="policy">Policy analysis</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="entry" data-type="project" data-skills="python,ml">
+          <div class="entry-head">
+            <div class="entry-when">Fall 2024</div>
+            <div class="entry-title-block">
+              <div class="entry-title">PG&amp;E Feeder Congestion Forecasting</div>
+              <div class="entry-org">Data, Environment &amp; Society · Team of 4</div>
+            </div>
+            <div class="entry-toggle">+</div>
+          </div>
+          <div class="entry-body">
+            <p>
+              Random Forest forecast for feeder-level congestion across PG&amp;E's distribution
+              system. Owned EV-data pipeline and multi-class congestion-tier model.
+            </p>
+            <div class="entry-skills">
+              <span class="entry-skill" data-s="python">Python</span>
+              <span class="entry-skill" data-s="ml">Machine learning</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="entry" data-type="project" data-skills="r,causal,policy">
+          <div class="entry-head">
+            <div class="entry-when">Spring 2025</div>
+            <div class="entry-title-block">
+              <div class="entry-title">EV Rebate Causal Analysis</div>
+              <div class="entry-org">Causal Inference Lab</div>
+            </div>
+            <div class="entry-toggle">+</div>
+          </div>
+          <div class="entry-body">
+            <p>Difference-in-differences analysis of California's enhanced rebate program in low-income census tracts.</p>
+            <div class="entry-skills">
+              <span class="entry-skill" data-s="r">R</span>
+              <span class="entry-skill" data-s="causal">Causal inference</span>
+              <span class="entry-skill" data-s="policy">Policy analysis</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="entry" data-type="project" data-skills="gis,policy">
+          <div class="entry-head">
+            <div class="entry-when">Spring 2025</div>
+            <div class="entry-title-block">
+              <div class="entry-title">Solar Curtailment &amp; the Duck Curve</div>
+              <div class="entry-org">Energy Markets &amp; Regulation</div>
+            </div>
+            <div class="entry-toggle">+</div>
+          </div>
+          <div class="entry-body">
+            <p>Geospatial analysis of when, where, and why California curtails clean electrons.</p>
+            <div class="entry-skills">
+              <span class="entry-skill" data-s="gis">Geospatial</span>
+              <span class="entry-skill" data-s="policy">Policy analysis</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="empty" id="empty-state">
+        Nothing matches that combination — try removing a filter.
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<footer class="site">
+  <div class="container">
+    <div class="copy">© 2026 Parker Tikson. Work shown with permission of collaborators.</div>
+    <div class="links">
+      <a href="mailto:#">Email</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">GitHub</a>
+      <a href="/resume">Résumé</a>
+    </div>
+    <div class="colophon">Set in Fraunces &amp; Inter Tight. Built with care.</div>
+  </div>
+</footer>
+
+<script>
+  // entry expand/collapse
+  document.querySelectorAll('.entry-head').forEach(h => {
+    h.addEventListener('click', () => h.parentElement.classList.toggle('open'));
+  });
+
+  // filter state
+  const state = { types: new Set(), skills: new Set() };
+  const entries = Array.from(document.querySelectorAll('.entry'));
+  const empty = document.getElementById('empty-state');
+  const visibleCount = document.getElementById('visible-count');
+
+  function applyFilters() {
+    let visible = 0;
+    entries.forEach(e => {
+      const t = e.dataset.type;
+      const s = e.dataset.skills.split(',');
+
+      const typeOK = state.types.size === 0 || state.types.has(t);
+      const skillOK = state.skills.size === 0 ||
+                      [...state.skills].every(sk => s.includes(sk));
+
+      e.classList.remove('hidden', 'dim');
+      if (!typeOK || !skillOK) {
+        e.classList.add('hidden');
+      } else {
+        visible++;
+      }
+
+      // mark matching skills inside the entry
+      e.querySelectorAll('.entry-skill').forEach(sp => {
+        sp.classList.toggle('match', state.skills.has(sp.dataset.s));
+      });
+    });
+
+    visibleCount.textContent = visible === entries.length ? 'all' :
+                               visible === 0 ? 'none' : `${visible} of ${entries.length}`;
+    empty.classList.toggle('show', visible === 0);
+  }
+
+  document.querySelectorAll('.pill').forEach(p => {
+    p.addEventListener('click', () => {
+      const filter = p.dataset.filterType;
+      const value = p.dataset.value;
+      const set = filter === 'type' ? state.types : state.skills;
+      if (set.has(value)) { set.delete(value); p.classList.remove('active'); }
+      else { set.add(value); p.classList.add('active'); }
+      if (filter === 'skill') p.classList.toggle('skill', set.has(value));
+      applyFilters();
+    });
+  });
+
+  document.getElementById('clear-btn').addEventListener('click', () => {
+    state.types.clear(); state.skills.clear();
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active', 'skill'));
+    applyFilters();
+  });
+</script>
+
+</body>
+</html>

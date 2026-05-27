@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Parker Tikson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #161915; --paper: #ffffff; --paper-2: #f4f4f1;
+    --rule: #1a1f1a; --muted: #5a6359; --accent: #1f4d3f;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter Tight', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--sans); font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at top right, rgba(31,77,63,0.04), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(74,63,45,0.05), transparent 60%);
+    background-attachment: fixed;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.06 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none; opacity: 0.5; z-index: 1; mix-blend-mode: multiply;
+  }
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 48px; position: relative; z-index: 2; }
+
+  /* nav */
+  nav.top {
+    border-bottom: 1px solid var(--rule); padding: 18px 0;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  nav.top .container { display: flex; justify-content: space-between; align-items: center; }
+  nav.top a { color: var(--ink); text-decoration: none; margin-left: 28px; }
+  nav.top a:hover { color: var(--accent); }
+  nav.top .brand { font-family: var(--serif); font-weight: 500; font-size: 16px; text-transform: none; letter-spacing: -0.01em; }
+
+  /* ─── HEADER ─── */
+  header.page {
+    padding: 64px 0 48px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .h-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .h-tag {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent);
+    border-top: 2px solid var(--accent); padding-top: 10px;
+  }
+  h1 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(40px, 5vw, 64px); line-height: 1.0;
+    letter-spacing: -0.025em; max-width: 18ch;
+  }
+  h1 em { font-style: italic; font-weight: 300; color: var(--accent); }
+  .h-deck {
+    margin-top: 22px;
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: 19px; color: var(--muted); max-width: 56ch;
+    line-height: 1.45;
+  }
+
+  /* ─── LETTER ─── */
+  .letter {
+    padding: 72px 0 48px;
+  }
+  .letter-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 56px;
+  }
+  .letter-meta {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em;
+    color: var(--muted); line-height: 1.7;
+  }
+  .letter-meta .lbl { display: block; color: var(--muted); font-size: 9px; letter-spacing: 0.1em; margin-top: 14px; }
+  .letter-meta .lbl:first-child { margin-top: 0; }
+  .letter-meta .val { display: block; color: var(--ink); margin-top: 2px; }
+
+  .prose {
+    max-width: 60ch;
+  }
+  .prose p {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 19px; line-height: 1.65;
+    margin-bottom: 22px;
+    color: var(--ink);
+  }
+  .prose p:first-child::first-letter {
+    font-family: var(--serif);
+    font-size: 64px;
+    float: left;
+    line-height: 0.9;
+    padding: 4px 12px 0 0;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .prose p em { font-style: italic; color: var(--accent); }
+  .prose .signoff {
+    margin-top: 40px;
+    font-family: var(--serif); font-style: italic;
+    color: var(--muted); font-size: 17px;
+  }
+  .prose .signoff .name {
+    font-style: normal;
+    font-weight: 500;
+    color: var(--ink);
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* ─── PULL QUOTES ─── */
+  .pull {
+    margin: 36px 0;
+    padding: 4px 0 4px 28px;
+    border-left: 3px solid var(--accent);
+    font-family: var(--serif); font-style: italic;
+    font-weight: 300; font-size: 26px; line-height: 1.35;
+    color: var(--ink);
+    max-width: 50ch;
+  }
+
+  /* ─── FAVORITES BAND ─── */
+  .favs {
+    padding: 80px 0 64px;
+    border-top: 1px solid var(--rule);
+  }
+  .favs-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 56px;
+  }
+  .favs-head h2 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 28px; letter-spacing: -0.015em; line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .favs-head .h-meta {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--muted); letter-spacing: 0.05em;
+  }
+
+  .favs-cats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: rgba(26,31,26,0.18);
+    border: 1px solid rgba(26,31,26,0.18);
+  }
+  .fav-cat {
+    background: var(--paper-2);
+    padding: 28px 26px;
+  }
+  .fav-cat .cat-lbl {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 18px;
+  }
+  .fav-cat ul { list-style: none; }
+  .fav-cat li {
+    font-family: var(--serif); font-size: 17px;
+    line-height: 1.4;
+    padding: 10px 0;
+    border-bottom: 1px dotted rgba(26,31,26,0.18);
+  }
+  .fav-cat li:last-child { border-bottom: none; }
+  .fav-cat li .by {
+    font-style: italic; font-weight: 300; color: var(--muted);
+    font-size: 14px; display: block; margin-top: 1px;
+  }
+  .fav-cat li .annot {
+    display: block;
+    margin-top: 4px;
+    font-family: var(--sans); font-size: 13px;
+    font-style: normal;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  /* ─── NOW BAND ─── */
+  .now-band {
+    padding: 64px 0 80px;
+    border-top: 1px solid var(--rule);
+  }
+  .now-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .now-head h2 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 28px; letter-spacing: -0.015em; line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .now-head .h-meta {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--muted); letter-spacing: 0.05em;
+  }
+  .now-head .updated {
+    margin-top: 14px;
+    font-family: var(--mono); font-size: 10px;
+    color: var(--muted); letter-spacing: 0.05em;
+  }
+  .now-head .updated .pulse {
+    display: inline-block; width: 7px; height: 7px;
+    background: var(--accent); border-radius: 50%;
+    margin-right: 8px; vertical-align: middle;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .now-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .now-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 24px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(26,31,26,0.15);
+    align-items: baseline;
+  }
+  .now-item:first-child { padding-top: 0; }
+  .now-item:last-child { border-bottom: none; }
+  .now-verb {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .now-text {
+    font-family: var(--serif); font-size: 18px;
+    line-height: 1.45;
+  }
+  .now-text .sub {
+    display: block;
+    font-style: italic; font-weight: 300;
+    color: var(--muted); font-size: 14px;
+    margin-top: 2px;
+  }
+
+  /* ─── CONNECT ─── */
+  .connect {
+    padding: 64px 0 80px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+  }
+  .connect .lbl {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 24px;
+  }
+  .connect h2 {
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(28px, 3.5vw, 42px); line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    max-width: 24ch; margin-left: auto; margin-right: auto;
+  }
+  .connect h2 em { font-style: italic; color: var(--accent); }
+  .connect .actions {
+    display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;
+  }
+  .btn {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 14px 22px;
+    border: 1px solid var(--rule); text-decoration: none; color: var(--ink);
+    transition: all 0.2s; background: transparent;
+  }
+  .btn:hover { background: var(--ink); color: var(--paper); }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+@media (max-width: 880px) {
+    .container { padding: 0 24px; }
+    .h-grid, .letter-grid, .favs-grid, .now-grid {
+      grid-template-columns: 1fr; gap: 24px;
+    }
+    .favs-cats { grid-template-columns: 1fr; }
+    .prose p { font-size: 17px; }
+    .pull { font-size: 22px; padding-left: 20px; }
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  header.page, .letter { animation: rise 0.7s ease-out backwards; }
+  .letter { animation-delay: 0.15s; }
+
+  /* ─── FOOTER (UNIFIED) ─── */
+  footer.site {
+    border-top: 1px solid var(--rule);
+    padding: 40px 0 56px;
+    margin-top: 32px;
+  }
+  footer.site .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  footer.site .copy {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+  footer.site .links {
+    display: flex;
+    gap: 24px;
+  }
+  footer.site .links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  footer.site .links a:hover { color: var(--accent); }
+  footer.site .colophon {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="container">
+    <a class="brand" href="/">Parker Tikson</a>
+    <div class="links">
+      <a href="/masters">Master's</a>
+      <a href="/bachelors">Bachelor's</a>
+      <a href="/about">About</a>
+      <a href="/photo">Photo</a>
+      <a href="/resume">Résumé</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <header class="page">
+    <div class="h-grid">
+      <div class="h-tag">§ About</div>
+      <div>
+        <h1>The longer answer to <em>"so what do you do?"</em></h1>
+        <p class="h-deck">
+          A few paragraphs in plain English about how I got here, what keeps me showing up to the work,
+          and the things outside it that make the work possible.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── LETTER ─── -->
+  <section class="letter">
+    <div class="letter-grid">
+      <div class="letter-meta">
+        <span class="lbl">Written</span>
+        <span class="val">November 2026</span>
+        <span class="lbl">From</span>
+        <span class="val">Berkeley, CA</span>
+        <span class="lbl">Reading time</span>
+        <span class="val">~3 minutes</span>
+      </div>
+
+      <div class="prose">
+        <p>
+          [Open with something specific and concrete — not "I've always loved the environment."
+          Try: a moment, a place, a problem that first made you pay attention. Maybe a summer
+          spent somewhere, a class that broke something open, a particular blackout or wildfire
+          that made the abstract suddenly real.]
+        </p>
+
+        <p>
+          [Bridge into your trajectory — what your bachelor's gave you, what work afterward
+          taught you, what made you go back for the master's. The shape I'd aim for: not a
+          résumé in prose, but the <em>reasoning</em> behind the moves.]
+        </p>
+
+        <div class="pull">
+          [A pull quote here — one sentence that captures what you actually believe about the
+          work. Could be a line from above, could be its own thought.]
+        </div>
+
+        <p>
+          [What you care about right now. The questions you wake up thinking about. Why
+          California's grid in particular, or why energy systems more broadly. Specific is
+          better than grand — "I want to understand why DER programs underperform their
+          targeting" lands harder than "I want to fight climate change."]
+        </p>
+
+        <p>
+          [The personal layer. What you do when you're not in front of a model — the
+          photography, the trail running, the sourdough, the long drives, whatever it is.
+          This is where the page earns its "earnest and personal" register. Two or three
+          sentences. Specific details, not categories.]
+        </p>
+
+        <p>
+          [Optional close — what you're trying to do next, who you'd love to hear from,
+          what kind of conversation you're hoping this site starts. Generous, not pleading.]
+        </p>
+
+        <div class="signoff">
+          With genuine warmth,
+          <span class="name">Parker</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAVORITES ─── -->
+  <section class="favs">
+    <div class="favs-grid">
+      <div class="favs-head">
+        <h2>Things I keep coming back to</h2>
+        <p class="h-meta">A working list, updated when I notice it's gone stale</p>
+      </div>
+
+      <div class="favs-cats">
+        <div class="fav-cat">
+          <div class="cat-lbl">Books</div>
+          <ul>
+            <li>
+              The Grid
+              <span class="by">Gretchen Bakke</span>
+              <span class="annot">The book that made me want to do this work in the first place.</span>
+            </li>
+            <li>
+              Power Metal
+              <span class="by">Vince Beiser</span>
+              <span class="annot">Currently reading. Required for anyone working in clean tech.</span>
+            </li>
+            <li>
+              [Book three]
+              <span class="by">[Author]</span>
+              <span class="annot">[Why it stuck.]</span>
+            </li>
+          </ul>
+        </div>
+        <div class="fav-cat">
+          <div class="cat-lbl">People I learn from</div>
+          <ul>
+            <li>
+              Jesse Jenkins
+              <span class="by">Princeton ZERO Lab</span>
+              <span class="annot">Energy systems modeling done in public.</span>
+            </li>
+            <li>
+              [Person]
+              <span class="by">[Where]</span>
+              <span class="annot">[For what.]</span>
+            </li>
+            <li>
+              [Person]
+              <span class="by">[Where]</span>
+              <span class="annot">[For what.]</span>
+            </li>
+          </ul>
+        </div>
+        <div class="fav-cat">
+          <div class="cat-lbl">Trails</div>
+          <ul>
+            <li>
+              [Trail name]
+              <span class="by">[Where]</span>
+              <span class="annot">[Why.]</span>
+            </li>
+            <li>
+              [Trail name]
+              <span class="by">[Where]</span>
+              <span class="annot">[Why.]</span>
+            </li>
+          </ul>
+        </div>
+        <div class="fav-cat">
+          <div class="cat-lbl">Albums for thinking</div>
+          <ul>
+            <li>
+              [Album]
+              <span class="by">[Artist]</span>
+              <span class="annot">[For what kind of work.]</span>
+            </li>
+            <li>
+              [Album]
+              <span class="by">[Artist]</span>
+              <span class="annot">[For what kind of work.]</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── NOW ─── -->
+  <section class="now-band">
+    <div class="now-grid">
+      <div class="now-head">
+        <h2>What I'm doing now</h2>
+        <p class="h-meta">Inspired by Derek Sivers' /now page convention</p>
+        <div class="updated"><span class="pulse"></span>Updated Nov 2026</div>
+      </div>
+
+      <div class="now-list">
+        <div class="now-item">
+          <div class="now-verb">Working on</div>
+          <div class="now-text">
+            [Current project or focus]
+            <span class="sub">[One line of context.]</span>
+          </div>
+        </div>
+        <div class="now-item">
+          <div class="now-verb">Reading</div>
+          <div class="now-text">
+            Power Metal — Vince Beiser
+            <span class="sub">[A line on what's standing out.]</span>
+          </div>
+        </div>
+        <div class="now-item">
+          <div class="now-verb">Learning</div>
+          <div class="now-text">
+            [A skill, a tool, a topic]
+            <span class="sub">[Why now.]</span>
+          </div>
+        </div>
+        <div class="now-item">
+          <div class="now-verb">Planning</div>
+          <div class="now-text">
+            [Trip, talk, event]
+            <span class="sub">[When.]</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONNECT ─── -->
+  <section class="connect">
+    <div class="lbl">§ Get in touch</div>
+    <h2>If any of this resonates, <em>I'd love to hear from you</em>.</h2>
+    <div class="actions">
+      <a class="btn primary" href="mailto:#">Email me</a>
+      <a class="btn" href="#">LinkedIn</a>
+      <a class="btn" href="#">GitHub</a>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site">
+  <div class="container">
+    <div class="copy">© 2026 Parker Tikson. Work shown with permission of collaborators.</div>
+    <div class="links">
+      <a href="mailto:#">Email</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">GitHub</a>
+      <a href="/resume">Résumé</a>
+    </div>
+    <div class="colophon">Set in Fraunces &amp; Inter Tight. Built with care.</div>
+  </div>
+</footer>
+
+</body>
+</html>

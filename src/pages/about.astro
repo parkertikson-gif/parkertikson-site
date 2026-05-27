@@ -1,0 +1,175 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/about.css';
+
+const favorites = [
+  {
+    label: 'Books',
+    items: [
+      { title: 'The Grid', by: 'Gretchen Bakke', annot: 'The book that made me want to do this work in the first place.' },
+      { title: 'Power Metal', by: 'Vince Beiser', annot: 'Currently reading. Required for anyone working in clean tech.' },
+      { title: '[Book three]', by: '[Author]', annot: '[Why it stuck.]' },
+    ],
+  },
+  {
+    label: 'People I learn from',
+    items: [
+      { title: 'Jesse Jenkins', by: 'Princeton ZERO Lab', annot: 'Energy systems modeling done in public.' },
+      { title: '[Person]', by: '[Where]', annot: '[For what.]' },
+      { title: '[Person]', by: '[Where]', annot: '[For what.]' },
+    ],
+  },
+  {
+    label: 'Trails',
+    items: [
+      { title: '[Trail name]', by: '[Where]', annot: '[Why.]' },
+      { title: '[Trail name]', by: '[Where]', annot: '[Why.]' },
+    ],
+  },
+  {
+    label: 'Albums for thinking',
+    items: [
+      { title: '[Album]', by: '[Artist]', annot: '[For what kind of work.]' },
+      { title: '[Album]', by: '[Artist]', annot: '[For what kind of work.]' },
+    ],
+  },
+];
+
+const nowItems = [
+  { verb: 'Working on', text: '[Current project or focus]', sub: '[One line of context.]' },
+  { verb: 'Reading', text: 'Power Metal — Vince Beiser', sub: '[A line on what’s standing out.]' },
+  { verb: 'Learning', text: '[A skill, a tool, a topic]', sub: '[Why now.]' },
+  { verb: 'Planning', text: '[Trip, talk, event]', sub: '[When.]' },
+];
+---
+<Layout title="About — Parker Tikson" description="A longer answer to so what do you do — how Parker Tikson got into energy systems work, and the things outside it that make it possible.">
+
+  <header class="page">
+    <div class="h-grid">
+      <div class="h-tag">§ About</div>
+      <div>
+        <h1>The longer answer to <em>“so what do you do?”</em></h1>
+        <p class="h-deck">
+          A few paragraphs in plain English about how I got here, what keeps me showing up to the work,
+          and the things outside it that make the work possible.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <section class="letter">
+    <div class="letter-grid">
+      <div class="letter-meta">
+        <span class="lbl">Written</span>
+        <span class="val">November 2026</span>
+        <span class="lbl">From</span>
+        <span class="val">Berkeley, CA</span>
+        <span class="lbl">Reading time</span>
+        <span class="val">~3 minutes</span>
+      </div>
+
+      <div class="prose">
+        <p>
+          [Open with something specific and concrete — not "I've always loved the environment."
+          Try: a moment, a place, a problem that first made you pay attention. Maybe a summer
+          spent somewhere, a class that broke something open, a particular blackout or wildfire
+          that made the abstract suddenly real.]
+        </p>
+
+        <p>
+          [Bridge into your trajectory — what your bachelor's gave you, what work afterward
+          taught you, what made you go back for the master's. The shape I'd aim for: not a
+          résumé in prose, but the <em>reasoning</em> behind the moves.]
+        </p>
+
+        <div class="pull">
+          [A pull quote here — one sentence that captures what you actually believe about the
+          work. Could be a line from above, could be its own thought.]
+        </div>
+
+        <p>
+          [What you care about right now. The questions you wake up thinking about. Why
+          California's grid in particular, or why energy systems more broadly. Specific is
+          better than grand — "I want to understand why DER programs underperform their
+          targeting" lands harder than "I want to fight climate change."]
+        </p>
+
+        <p>
+          [The personal layer. What you do when you're not in front of a model — the
+          photography, the trail running, the sourdough, the long drives, whatever it is.
+          This is where the page earns its "earnest and personal" register. Two or three
+          sentences. Specific details, not categories.]
+        </p>
+
+        <p>
+          [Optional close — what you're trying to do next, who you'd love to hear from,
+          what kind of conversation you're hoping this site starts. Generous, not pleading.]
+        </p>
+
+        <div class="signoff">
+          With genuine warmth,
+          <span class="name">Parker</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="favs">
+    <div class="favs-grid">
+      <div class="favs-head">
+        <h2>Things I keep coming back to</h2>
+        <p class="h-meta">A working list, updated when I notice it's gone stale</p>
+      </div>
+
+      <div class="favs-cats">
+        {favorites.map(cat => (
+          <div class="fav-cat">
+            <div class="cat-lbl">{cat.label}</div>
+            <ul>
+              {cat.items.map(item => (
+                <li>
+                  {item.title}
+                  <span class="by">{item.by}</span>
+                  <span class="annot">{item.annot}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="now-band">
+    <div class="now-grid">
+      <div class="now-head">
+        <h2>What I'm doing now</h2>
+        <p class="h-meta">Inspired by Derek Sivers' /now page convention</p>
+        <div class="updated"><span class="pulse"></span>Updated Nov 2026</div>
+      </div>
+
+      <div class="now-list">
+        {nowItems.map(item => (
+          <div class="now-item">
+            <div class="now-verb">{item.verb}</div>
+            <div class="now-text">
+              {item.text}
+              <span class="sub">{item.sub}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="connect">
+    <div class="lbl">§ Get in touch</div>
+    <h2>If any of this resonates, <em>I'd love to hear from you</em>.</h2>
+    <div class="actions">
+      <a class="btn primary" href="mailto:parker_tikson@berkeley.edu">Email me</a>
+      <a class="btn" href="#">LinkedIn</a>
+      <a class="btn" href="#">GitHub</a>
+    </div>
+  </section>
+
+</Layout>

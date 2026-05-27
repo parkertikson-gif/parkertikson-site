@@ -1,0 +1,90 @@
+/* Inherits header, term-block, term-head, term-tag, term-h, degree-card,
+   h-grid, h-tag, h-deck, breadcrumb from masters.css.
+   The overview-specific bits are below. */
+
+/* ─── INTRO ─── */
+.overview-intro {
+  padding: 48px 0 8px;
+}
+.overview-intro p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 60ch;
+}
+
+/* ─── COURSE ROWS (non-interactive) ─── */
+.overview-courses { display: flex; flex-direction: column; }
+
+.overview-course {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 48px;
+  padding: 24px 0;
+  border-top: 1px solid rgba(26,31,26,0.12);
+  align-items: baseline;
+}
+.overview-course:last-child {
+  border-bottom: 1px solid rgba(26,31,26,0.12);
+}
+.overview-course .c-code {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+.overview-course .c-title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  margin-bottom: 6px;
+}
+.overview-course .c-deck {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 60ch;
+  line-height: 1.5;
+}
+
+/* ─── REFLECTION BAND ─── */
+.gave-me {
+  margin-top: 72px;
+  padding: 40px 0 16px;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 48px;
+}
+.gave-me .tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  text-transform: uppercase;
+  border-top: 2px solid var(--accent);
+  padding-top: 10px;
+}
+.gave-me .body { max-width: 60ch; }
+.gave-me p {
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.gave-me p:last-child { margin-bottom: 0; }
+.gave-me p em { font-style: italic; color: var(--accent); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 880px) {
+  .overview-course { grid-template-columns: 1fr; gap: 8px; }
+  .gave-me { grid-template-columns: 1fr; gap: 16px; }
+}

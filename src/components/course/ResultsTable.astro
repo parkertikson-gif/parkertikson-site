@@ -1,0 +1,41 @@
+---
+interface Column { label: string; numeric: boolean; }
+interface Row {
+  model: string;
+  cells: string[];
+  winner?: boolean;
+}
+interface Props {
+  title: string;
+  problemLabel?: string;
+  columns: Column[];
+  rows: Row[];
+}
+const { title, problemLabel, columns, rows } = Astro.props;
+const cellCols = columns.slice(1);
+---
+<div class="results">
+  <div class="results-head">
+    <h3>{title}</h3>
+    {problemLabel && <span class="tag">{problemLabel}</span>}
+  </div>
+  <table class="results-tbl">
+    <thead>
+      <tr>
+        {columns.map(c => (
+          <th class:list={[c.numeric && 'num-cell']}>{c.label}</th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map(r => (
+        <tr class:list={[r.winner && 'winner']}>
+          <td><span class="model-name">{r.model}</span></td>
+          {r.cells.map((cell, i) => (
+            <td class:list={[cellCols[i]?.numeric && 'num-cell']}>{cell}</td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

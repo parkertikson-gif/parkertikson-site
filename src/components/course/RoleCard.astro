@@ -1,0 +1,15 @@
+---
+interface Teammate { name: string; note?: string; }
+interface Props {
+  contribution: string;
+  teammates?: Teammate[];
+}
+const { contribution, teammates } = Astro.props;
+---
+<div class="role-card">
+  <div class="label">My contribution</div>
+  <div class="text" set:html={contribution} />
+  {teammates && teammates.length > 0 && (
+    <div class="team">Team — {teammates.map((m, i) => <Fragment><strong>{m.name}</strong>{m.note ? ` (${m.note})` : ''}{i < teammates.length - 1 ? ' · ' : ''}</Fragment>)}</div>
+  )}
+</div>

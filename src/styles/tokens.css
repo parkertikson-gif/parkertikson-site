@@ -1,0 +1,13 @@
+:root {
+  --ink:        #161915;
+  --paper:      #ffffff;
+  --paper-2:    #f4f4f1;
+  --rule:       #1a1f1a;
+  --muted:      #5a6359;
+  --accent:     #1f4d3f;
+  --accent-2:   #4a3f2d;
+
+  --serif:      'Fraunces', Georgia, serif;
+  --sans:       'Inter Tight', system-ui, sans-serif;
+  --mono:       'JetBrains Mono', ui-monospace, monospace;
+}

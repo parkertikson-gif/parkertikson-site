@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo — Parker Tikson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #161915; --paper: #ffffff; --paper-2: #f4f4f1;
+    --rule: #1a1f1a; --muted: #5a6359; --accent: #1f4d3f;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter Tight', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--sans); font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at top right, rgba(31,77,63,0.04), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(74,63,45,0.05), transparent 60%);
+    background-attachment: fixed;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.06 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none; opacity: 0.5; z-index: 1; mix-blend-mode: multiply;
+  }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 48px; position: relative; z-index: 2; }
+
+  /* nav */
+  nav.top {
+    border-bottom: 1px solid var(--rule); padding: 18px 0;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  nav.top .container { display: flex; justify-content: space-between; align-items: center; max-width: 1280px; }
+  nav.top a { color: var(--ink); text-decoration: none; margin-left: 28px; }
+  nav.top a:hover { color: var(--accent); }
+  nav.top .brand { font-family: var(--serif); font-weight: 500; font-size: 16px; text-transform: none; letter-spacing: -0.01em; }
+
+  /* ─── HEADER ─── */
+  header.page {
+    padding: 56px 0 40px;
+  }
+  .h-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 24px;
+    border-bottom: 1px solid rgba(26,31,26,0.18);
+    padding-bottom: 32px;
+  }
+  .h-left { display: flex; align-items: baseline; gap: 24px; flex-wrap: wrap; }
+  .h-tag {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  h1 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(36px, 4vw, 56px); line-height: 1;
+    letter-spacing: -0.025em;
+  }
+  h1 em { font-style: italic; font-weight: 300; color: var(--muted); }
+  .h-right {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em;
+    color: var(--muted); text-align: right;
+    line-height: 1.6;
+  }
+  .h-right .ct { color: var(--ink); }
+
+  .h-prose {
+    margin-top: 28px;
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: 18px; color: var(--muted); max-width: 50ch;
+    line-height: 1.45;
+  }
+
+  /* ─── MOSAIC ─── */
+  .mosaic {
+    padding: 48px 0 80px;
+    column-count: 3;
+    column-gap: 16px;
+  }
+  @media (max-width: 1100px) { .mosaic { column-count: 2; } }
+  @media (max-width: 640px)  { .mosaic { column-count: 1; } }
+
+  .photo {
+    break-inside: avoid;
+    margin-bottom: 16px;
+    background: var(--paper-2);
+    border: 1px solid rgba(26,31,26,0.12);
+    overflow: hidden;
+    cursor: zoom-in;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+  }
+  .photo:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(22,25,21,0.12);
+  }
+  .photo .frame {
+    width: 100%;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  .photo .frame::after {
+    /* subtle inner shadow for the "print on paper" feel */
+    content: '';
+    position: absolute; inset: 0;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+    pointer-events: none;
+  }
+  .photo .placeholder {
+    /* A nicely-toned svg placeholder so the page doesn't feel empty */
+    width: 100%;
+    display: block;
+  }
+
+  /* ─── LIGHTBOX ─── */
+  .lb {
+    position: fixed; inset: 0;
+    background: rgba(22,25,21,0.94);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+    padding: 32px;
+  }
+  .lb.open { display: flex; }
+  .lb-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    background: var(--paper-2);
+  }
+  .lb-meta {
+    position: absolute;
+    bottom: 24px; left: 32px;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+  .lb-close {
+    position: absolute;
+    top: 24px; right: 32px;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    background: none; border: none; cursor: pointer;
+    padding: 8px 12px;
+  }
+  .lb-close:hover { color: var(--paper); }
+
+  /* ─── COLOPHON ─── */
+  .colophon-strip {
+    border-top: 1px solid var(--rule);
+    padding: 36px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+  }
+  .col-item .lbl {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 8px;
+    display: block;
+  }
+  .col-item .val {
+    font-family: var(--serif); font-size: 16px;
+    line-height: 1.4;
+  }
+  .col-item .val .sub {
+    display: block;
+    font-style: italic; font-weight: 300;
+    color: var(--muted); font-size: 14px;
+    margin-top: 2px;
+  }
+@media (max-width: 880px) {
+    .container { padding: 0 24px; }
+    .colophon-strip { grid-template-columns: 1fr; gap: 20px; }
+    .h-row { flex-direction: column; align-items: flex-start; }
+    .h-right { text-align: left; }
+  }
+
+  /* ─── FOOTER (UNIFIED) ─── */
+  footer.site {
+    border-top: 1px solid var(--rule);
+    padding: 40px 0 56px;
+    margin-top: 32px;
+  }
+  footer.site .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  footer.site .copy {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+  footer.site .links {
+    display: flex;
+    gap: 24px;
+  }
+  footer.site .links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  footer.site .links a:hover { color: var(--accent); }
+  footer.site .colophon {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="container">
+    <a class="brand" href="/">Parker Tikson</a>
+    <div class="links">
+      <a href="/masters">Master's</a>
+      <a href="/bachelors">Bachelor's</a>
+      <a href="/about">About</a>
+      <a href="/photo">Photo</a>
+      <a href="/resume">Résumé</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <header class="page">
+    <div class="h-row">
+      <div class="h-left">
+        <span class="h-tag">§ Photo</span>
+        <h1>Things I noticed, <em>kept</em>.</h1>
+      </div>
+      <div class="h-right">
+        <div><span class="ct">42</span> images</div>
+        <div>2019 — present</div>
+      </div>
+    </div>
+    <p class="h-prose">
+      A loose archive. No themes, no series — just whatever asked to be photographed.
+      Click any image to see it bigger.
+    </p>
+  </header>
+
+  <!-- ─── MOSAIC ─── -->
+  <!-- These are placeholder SVGs in your palette. Replace with real images when ready. -->
+  <div class="mosaic" id="mosaic">
+
+    <div class="photo">
+      <div class="frame">
+        <svg class="placeholder" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ba88c"/><stop offset="1" stop-color="#5a6359"/></linearGradient></defs>
+          <rect width="400" height="500" fill="url(#g1)"/>
+          <path d="M0,380 L80,300 L150,340 L240,260 L320,310 L400,270 L400,500 L0,500 Z" fill="#3a4538" opacity="0.7"/>
+          <path d="M0,420 L120,360 L220,400 L340,350 L400,380 L400,500 L0,500 Z" fill="#1f4d3f" opacity="0.5"/>
+          <circle cx="320" cy="120" r="35" fill="#ffffff" opacity="0.6"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="photo">
+      <div class="frame">
+        <svg class="placeholder" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d4c4a0"/><stop offset="1" stop-color="#a89770"/></linearGradient></defs>
+          <rect width="400" height="300" fill="url(#g2)"/>
+          <rect x="0" y="180" width="400" height="120" fill="#7a6a4a" opacity="0.5"/>
+          <rect x="60" y="100" width="40" height="180" fill="#3a2f20" opacity="0.7"/>
+          <rect x="280" y="80" width="35" height="200" fill="#3a2f20" opacity="0.7"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="photo">
+      <div class="frame">
+        <svg class="placeholder" viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4a52"/><stop offset="1" stop-color="#1a2528"/></linearGradient></defs>
+          <rect width="400" height="600" fill="url(#g3)"/>
+          <path d="M0,400 Q100,360 200,380 T400,370 L400,600 L0,600 Z" fill="#0a1015" opacity="0.6"/>
+          <circle cx="120" cy="180" r="2" fill="#ffffff"/>
+          <circle cx="280" cy="220" r="1.5" fill="#ffffff"/>
+          <circle cx="350" cy="100" r="2.5" fill="#ffffff"/>
+          <circle cx="60" cy="300" r="1" fill="#ffffff"/>
+          <circle cx="200" cy="80" r="1.5" fill="#ffffff"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="photo">
+      <div class="frame">
+        <svg class="placeholder" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="400" fill="#c4b89a"/>
+          <ellipse cx="200" cy="220" rx="180" ry="60" fill="#7a6a4a" opacity="0.4"/>
+          <rect x="180" y="140" width="40" height="160" fill="#2a2018" opacity="0.8"/>
+          <ellipse cx="200" cy="140" rx="60" ry="40" fill="#3a4a32" opacity="0.6"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="photo">
+      <div class="frame">
+        <svg class="placeholder" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8d8b8"/><stop offset="0.6" stop-color="#c89878"/><stop offset="1" stop-color="#7a4838"/></linearGradient></defs>
+          <rect width="400" height="280" fill="url(#g5)"/>
+          <path d="M0,200 L60,160 L140,180 L220,140 L300,170 L400,150 L400,280 L0,280 Z" fill="#3a2820" opacity="0.7"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="photo">
+      <div class="frame">
+        <svg class="placeholder" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="500" fill="#5a6a55"/>
+          <rect x="40" y="100" width="20" height="300" fill="#2a3528"/>
+          <rect x="100" y="80" width="20" height="320" fill="#2a3528"/>
+          <rect x="160" y="120" width="20" height="280" fill="#2a3528"/>
+          <rect x="220" y="60" width="20" height="340" fill="#2a3528"/>
+          <rect x="280" y="100" width="20" height="300" fill="#2a3528"/>
+          <rect x="340" y="90" width="20" height="310" fill="#2a3528"/>
+          <rect x="0" y="380" width="400" height="120" fill="#3a4535" opacity="0.6"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="photo">
+      <div class="frame">
+        <svg class="placeholder" viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="350" fill="#1a1f1a"/>
+          <rect x="80" y="60" width="240" height="240" fill="#ffffff" opacity="0.92"/>
+          <circle cx="150" cy="140" r="20" fill="#1f4d3f"/>
+          <rect x="200" y="180" width="80" height="80" fill="#7a6a4a"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="photo">
+      <div class="frame">
+        <svg class="placeholder" viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="g8" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a89770"/><stop offset="1" stop-color="#5a4838"/></linearGradient></defs>
+          <rect width="400" height="600" fill="url(#g8)"/>
+          <path d="M0,300 Q200,200 400,280 L400,600 L0,600 Z" fill="#3a2820" opacity="0.6"/>
+          <path d="M0,400 Q150,340 300,380 T400,370 L400,600 L0,600 Z" fill="#2a1810" opacity="0.7"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="photo">
+      <div class="frame">
+        <svg class="placeholder" viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="320" fill="#7a8275"/>
+          <ellipse cx="200" cy="200" rx="160" ry="40" fill="#9aa295" opacity="0.6"/>
+          <path d="M120,200 L130,120 L150,200 Z" fill="#2a3528"/>
+          <path d="M250,200 L260,140 L280,200 Z" fill="#2a3528"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="photo">
+      <div class="frame">
+        <svg class="placeholder" viewBox="0 0 400 450" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="g10" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcc8a4"/><stop offset="1" stop-color="#7a6a4a"/></linearGradient></defs>
+          <rect width="400" height="450" fill="url(#g10)"/>
+          <path d="M0,250 L100,180 L180,220 L260,160 L340,200 L400,170 L400,450 L0,450 Z" fill="#5a4838" opacity="0.7"/>
+          <path d="M0,320 L120,260 L200,300 L300,250 L400,280 L400,450 L0,450 Z" fill="#3a2820" opacity="0.7"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="photo">
+      <div class="frame">
+        <svg class="placeholder" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="400" fill="#2a3528"/>
+          <circle cx="200" cy="200" r="120" fill="#1f4d3f" opacity="0.7"/>
+          <circle cx="200" cy="200" r="80" fill="#3a5d4a" opacity="0.7"/>
+          <circle cx="200" cy="200" r="40" fill="#5a7d6a" opacity="0.6"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="photo">
+      <div class="frame">
+        <svg class="placeholder" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="280" fill="#bcb098"/>
+          <rect x="0" y="160" width="400" height="120" fill="#7a6a4a" opacity="0.6"/>
+          <rect x="100" y="80" width="50" height="120" fill="#3a2820" opacity="0.8"/>
+          <rect x="200" y="60" width="50" height="140" fill="#3a2820" opacity="0.8"/>
+          <rect x="300" y="100" width="50" height="100" fill="#3a2820" opacity="0.8"/>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── COLOPHON ─── -->
+  <section class="colophon-strip">
+    <div class="col-item">
+      <span class="lbl">Shot on</span>
+      <span class="val">[Camera]
+        <span class="sub">+ a phone, when that's all I had</span>
+      </span>
+    </div>
+    <div class="col-item">
+      <span class="lbl">Edited in</span>
+      <span class="val">[Lightroom / VSCO / etc.]
+        <span class="sub">[Brief note on your approach, if any]</span>
+      </span>
+    </div>
+    <div class="col-item">
+      <span class="lbl">Prints</span>
+      <span class="val">Available on request
+        <span class="sub">For a friend or a wall, drop a line</span>
+      </span>
+    </div>
+  </section>
+
+</div>
+
+<!-- ─── LIGHTBOX ─── -->
+<div class="lb" id="lb">
+  <button class="lb-close">Close ✕</button>
+  <img class="lb-img" id="lb-img" src="" alt="">
+  <div class="lb-meta" id="lb-meta">— / —</div>
+</div>
+
+<footer class="site">
+  <div class="container">
+    <div class="copy">© 2026 Parker Tikson. Work shown with permission of collaborators.</div>
+    <div class="links">
+      <a href="mailto:#">Email</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">GitHub</a>
+      <a href="/resume">Résumé</a>
+    </div>
+    <div class="colophon">Set in Fraunces &amp; Inter Tight. Built with care.</div>
+  </div>
+</footer>
+
+<script>
+  // Lightbox: click any photo to expand. With real images, this would swap in the full-size source.
+  const lb = document.getElementById('lb');
+  const lbImg = document.getElementById('lb-img');
+  const lbMeta = document.getElementById('lb-meta');
+  const photos = document.querySelectorAll('.photo');
+
+  photos.forEach((p, i) => {
+    p.addEventListener('click', () => {
+      // For the placeholder mock, we lift the SVG into the lightbox.
+      // In the real site this would set lbImg.src = p.dataset.full
+      const svg = p.querySelector('svg').cloneNode(true);
+      svg.setAttribute('style', 'max-width:90vw;max-height:90vh;background:var(--paper-2);');
+      lb.querySelector('.lb-img').replaceWith(svg);
+      svg.id = 'lb-img';
+      lbMeta.textContent = `${String(i+1).padStart(2,'0')} / ${String(photos.length).padStart(2,'0')}`;
+      lb.classList.add('open');
+    });
+  });
+
+  lb.addEventListener('click', e => {
+    if (e.target === lb || e.target.classList.contains('lb-close')) {
+      lb.classList.remove('open');
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') lb.classList.remove('open');
+  });
+</script>
+
+</body>
+</html>

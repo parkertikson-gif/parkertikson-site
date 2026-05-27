@@ -1,0 +1,7 @@
+---
+interface Props { tools: string[]; }
+const { tools } = Astro.props;
+---
+<div class="tools">
+  {tools.map(t => <span class="tag">{t}</span>)}
+</div>
