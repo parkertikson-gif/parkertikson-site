@@ -210,6 +210,7 @@
 .entry[data-type="work"]::before { background: var(--accent); }
 .entry[data-type="education"]::before { background: var(--ink); }
 .entry[data-type="project"]::before { background: #2d4a3e; }
+.entry[data-type="extracurricular"]::before { background: var(--muted); }
 
 .entry-head {
   padding: 22px 26px;

@@ -1,6 +1,7 @@
 # build output
 dist/
 .astro/
+.cache/
 
 # dependencies
 node_modules/
@@ -21,3 +22,11 @@ pnpm-debug.log*
 # editors
 .vscode/
 .idea/
+
+# deployment platform metadata
+.vercel/
+.netlify/
+.wrangler/
+
+# Claude Code session metadata
+.claude/

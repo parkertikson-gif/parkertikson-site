@@ -16,42 +16,96 @@
   max-width: 60ch;
 }
 
-/* ─── COURSE ROWS (non-interactive) ─── */
-.overview-courses { display: flex; flex-direction: column; }
-
-.overview-course {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 48px;
-  padding: 24px 0;
-  border-top: 1px solid rgba(26,31,26,0.12);
-  align-items: baseline;
+/* ─── QUARTER GRID (per-quarter 2-column course layout) ─── */
+.term-h .loc {
+  font-style: italic;
+  font-weight: 300;
+  font-size: 18px;
+  color: var(--accent);
+  letter-spacing: -0.005em;
 }
-.overview-course:last-child {
+
+.quarter-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 48px;
+  row-gap: 0;
+  border-top: 1px solid rgba(26,31,26,0.12);
   border-bottom: 1px solid rgba(26,31,26,0.12);
 }
-.overview-course .c-code {
+.quarter-course {
+  padding: 18px 0;
+  border-bottom: 1px dotted rgba(26,31,26,0.12);
+}
+/* drop the bottom border on the last row (handles both even and odd counts) */
+.quarter-course:nth-last-child(-n+2):nth-child(even),
+.quarter-course:last-child {
+  border-bottom: none;
+}
+.qc-code {
   font-family: var(--mono);
   font-size: 11px;
   color: var(--muted);
   letter-spacing: 0.05em;
+  margin-bottom: 4px;
 }
-.overview-course .c-title {
+.qc-title {
   font-family: var(--serif);
   font-weight: 500;
-  font-size: 20px;
-  line-height: 1.25;
-  letter-spacing: -0.015em;
-  margin-bottom: 6px;
+  font-size: 17px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
-.overview-course .c-deck {
+
+/* ─── BEYOND THE TRANSCRIPT ─── */
+.beyond {
+  margin-top: 56px;
+  padding: 36px 0 16px;
+  border-top: 1px solid rgba(26,31,26,0.18);
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 48px;
+}
+.beyond .tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  text-transform: uppercase;
+  border-top: 2px solid var(--accent);
+  padding-top: 10px;
+}
+.beyond .body { max-width: 60ch; }
+.beyond-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.beyond-item {
+  padding: 14px 0;
+  border-bottom: 1px dotted rgba(26,31,26,0.18);
+}
+.beyond-item:last-child { border-bottom: none; }
+.beyond-label {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
-  font-size: 15px;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+.beyond-meta {
+  margin-left: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
   color: var(--muted);
-  max-width: 60ch;
-  line-height: 1.5;
+}
+.beyond-text {
+  margin-top: 4px;
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
 }
 
 /* ─── REFLECTION BAND ─── */
@@ -85,6 +139,7 @@
 
 /* ─── RESPONSIVE ─── */
 @media (max-width: 880px) {
-  .overview-course { grid-template-columns: 1fr; gap: 8px; }
+  .quarter-grid { grid-template-columns: 1fr; }
+  .beyond { grid-template-columns: 1fr; gap: 16px; }
   .gave-me { grid-template-columns: 1fr; gap: 16px; }
 }

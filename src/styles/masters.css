@@ -205,17 +205,26 @@ header.page h1 em {
   color: var(--muted);
   letter-spacing: 0.05em;
 }
-.c-code .feat {
+.c-code .no-page-label {
   display: inline-block;
   margin-top: 6px;
-  color: var(--accent);
-  font-weight: 500;
-  border: 1px solid var(--accent);
-  padding: 2px 7px;
+  color: var(--muted);
   font-size: 9px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  font-style: italic;
 }
+
+/* Non-linked rows (hasPage: false) — disable interactive affordances */
+.course.no-page {
+  cursor: default;
+}
+.course.no-page:hover {
+  padding-left: 0;
+  background: none;
+}
+.course.no-page:hover .c-title { color: var(--ink); }
+.course.no-page::after { display: none; }
 
 .c-body {
   display: flex;

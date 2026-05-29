@@ -13,7 +13,7 @@ import '../../styles/course.css';
 export async function getStaticPaths() {
   const all = await getCollection('courses');
   return all
-    .filter(e => e.data.degree === 'masters')
+    .filter(e => e.data.degree === 'masters' && e.data.hasPage !== false)
     .map(e => ({
       params: { slug: e.id.split('/').pop()! },
       props: { entry: e },

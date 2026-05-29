@@ -31,14 +31,14 @@ const configs: Record<Degree, DegreeConfig> = {
   masters: {
     label: "Master's",
     pageTitle: "Master's — Parker Tikson",
-    pageDescription: "A working archive of master's coursework at UC Berkeley ERG — projects, papers, and what they produced.",
+    pageDescription: "A working archive of master's coursework at UC Berkeley — Civil & Environmental Engineering, with a focus on energy, infrastructure, and climate.",
     headerTag: "§ Master's coursework",
-    headline: 'Two years, eight courses, one <em>through-line</em>.',
-    deck: "A working archive of the projects and papers I produced while studying energy &amp; resources at Berkeley. Click any course to see the final deliverable, my role, and what I took from it.",
+    headline: 'One year, eight courses, one <em>through-line</em>.',
+    deck: "A working archive of the projects and papers I produced while studying civil &amp; environmental engineering at Berkeley. Click any course to see the final deliverable, my role, and what I took from it.",
     degreeCard: {
-      program: { value: 'M.S., Energy &amp; Resources', sub: 'UC Berkeley · ERG' },
-      span: { value: '2024 — 2026', sub: 'Four semesters' },
-      focus: { value: 'Distribution-grid analytics', sub: '+ climate policy' },
+      program: { value: 'M.S., Civil &amp; Environmental Engineering', sub: 'UC Berkeley' },
+      span: { value: '2025 — 2026', sub: 'Two semesters' },
+      focus: { value: 'Energy &amp; Climate', sub: '+ civil infrastructure' },
     },
     pills: [
       { key: 'all', label: 'All' },
@@ -49,10 +49,8 @@ const configs: Record<Degree, DegreeConfig> = {
       { key: 'markets', label: 'Markets' },
     ],
     terms: [
-      { name: 'Fall 2024', ordinal: 'First semester' },
-      { name: 'Spring 2025', ordinal: 'Second semester' },
-      { name: 'Fall 2025', ordinal: 'Third semester' },
-      { name: 'Spring 2026', ordinal: 'Fourth semester' },
+      { name: 'Fall 2025', ordinal: 'First semester' },
+      { name: 'Spring 2026', ordinal: 'Second semester' },
     ],
     graduationYear: '2026',
   },
@@ -68,15 +66,13 @@ const grouped = cfg.terms
     name: term.name,
     ordinal: term.ordinal,
     index: i + 1,
-    courses: courses
-      .filter(e => e.data.term === term.name)
-      .sort((a, b) => Number(b.data.featured) - Number(a.data.featured)),
+    courses: courses.filter(e => e.data.term === term.name),
   }))
   .filter(g => g.courses.length > 0);
 
 const totalCourses = courses.length;
-const totalFeatured = courses.filter(e => e.data.featured).length;
 const totalUnits = courses.reduce((sum, e) => sum + (e.data.units ?? 0), 0);
+const totalSemesters = grouped.length;
 
 const slugOf = (id: string) => id.split('/').pop()!;
 const degreeHref = `/${degree}`;
@@ -137,15 +133,18 @@ const degreeHref = `/${degree}`;
             const d = course.data;
             const slug = slugOf(course.id);
             const tagsAttr = (d.tags ?? []).join(',');
+            const hasPage = d.hasPage !== false;
+            const Tag = hasPage ? 'a' : 'div';
+            const linkProps = hasPage ? { href: `${degreeHref}/${slug}` } : {};
             return (
-              <a
-                class:list={['course', { 'has-feature': d.featured }]}
-                href={`${degreeHref}/${slug}`}
+              <Tag
+                class:list={['course', { 'no-page': !hasPage }]}
+                {...linkProps}
                 data-tags={tagsAttr}
               >
                 <div class="c-code">
                   {d.code}
-                  {d.featured && <><br /><span class="feat">Featured</span></>}
+                  {!hasPage && <><br /><span class="no-page-label">Course only</span></>}
                 </div>
                 <div class="c-body">
                   <div class="c-title" set:html={d.title} />
@@ -161,7 +160,7 @@ const degreeHref = `/${degree}`;
                   {d.units != null && <>{d.units} units</>}
                   {d.deliverable && <span class="deliv">{d.deliverable}</span>}
                 </div>
-              </a>
+              </Tag>
             );
           })}
         </div>
@@ -176,8 +175,8 @@ const degreeHref = `/${degree}`;
         <div class="lbl">Courses completed<br />or in progress</div>
       </div>
       <div class="stat">
-        <div class="num">{totalFeatured}</div>
-        <div class="lbl">Featured projects<br />with full writeups</div>
+        <div class="num">{totalSemesters}</div>
+        <div class="lbl">Semesters at<br />the program</div>
       </div>
       <div class="stat">
         <div class="num">{totalUnits}<span class="unit">u</span></div>

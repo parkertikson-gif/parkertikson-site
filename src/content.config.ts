@@ -17,8 +17,12 @@ const courses = defineCollection({
     discipline: z.string().optional(),
 
     // Index / filtering
-    featured: z.boolean().default(false),
     tags: z.array(z.string()).default([]),
+
+    // Whether this course has its own /[degree]/[slug] detail page. Default true.
+    // Courses with hasPage:false appear on the index but render as non-linked rows
+    // and are excluded from getStaticPaths.
+    hasPage: z.boolean().default(true),
 
     // Short, human-friendly tag list shown on listing pages (home featured, masters index).
     // Distinct from filter `tags` (taxonomy) and `tools` (full tools-used list on the course page).

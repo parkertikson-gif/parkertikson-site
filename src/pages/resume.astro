@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import '../styles/resume.css';
 
-type EntryType = 'work' | 'education' | 'project';
+type EntryType = 'work' | 'education' | 'project' | 'extracurricular';
 type SkillKey = 'python' | 'r' | 'ml' | 'causal' | 'gis' | 'policy' | 'research';
 
 interface Entry {
@@ -29,74 +29,138 @@ const skillOrder: SkillKey[] = ['python', 'r', 'ml', 'causal', 'gis', 'policy', 
 const entries: Entry[] = [
   {
     type: 'work',
-    when: '2024 — now',
+    when: '2025 — now',
     title: 'Graduate Researcher',
-    org: 'UC Berkeley · Energy & Resources Group · Berkeley, CA',
-    body: "Working alongside [Advisor's lab] on questions of distributed energy resource integration and the planning gaps that emerge as California's grid electrifies. My piece is the data layer — building feeder-level forecasting tools that help regulators and program administrators target investment more precisely.",
-    skills: ['python', 'ml', 'research', 'policy'],
-  },
-  {
-    type: 'work',
-    when: '2022 — 2024',
-    title: '[Job Title]',
-    org: '[Company] · [City]',
-    body: '[Two or three sentences describing what you actually did, what you owned, and what changed because you were there.]',
+    org: 'UC Berkeley · Civil & Environmental Engineering · Oakland, CA',
+    body: "Independent research on grid flexibility and the energy transition within Berkeley's Civil & Environmental Engineering department. Capstone: a 168-hour linear programming optimizer that schedules a 500 MW data center's compute workloads against CAISO day-ahead prices and marginal grid emissions across four BESS configurations.",
     skills: ['python', 'research', 'policy'],
   },
   {
     type: 'work',
-    when: 'Sum 2021',
-    title: '[Internship Title]',
-    org: '[Organization] · [City]',
-    body: '[Brief description of the internship and what you took from it.]',
+    when: 'Jun — Aug 2025',
+    title: 'Product Strategy — Vehicle Electrification & Grid Integration',
+    org: 'Pacific Gas & Electric · Oakland, CA · Contract',
+    body: "Performed market research and cost-benefit analysis to support a bid for California's EPIC Program funds. Developed go-to-market strategy and technical product requirements within PG&E's Grid Innovation team to enable grid flexibility through EVs.",
     skills: ['research', 'policy'],
   },
   {
-    type: 'education',
-    when: '2024 — 2026',
-    title: 'M.S., Energy & Resources',
-    org: 'UC Berkeley · Berkeley, CA',
-    body: 'Interdisciplinary degree spanning applied machine learning, causal inference, energy markets, and the political economy of climate policy.',
-    skills: ['python', 'r', 'ml', 'causal', 'gis'],
+    type: 'work',
+    when: '2021 — 2024',
+    title: 'Sr. Technical Product Manager · Workforce Science and Strategy',
+    org: 'Amazon · Seattle, WA',
+    body: "Owned end-to-end development for Amazon's internal Workforce Management System — a suite of workforce planning tools enabling the first fully-automated flexible workforce at scale (>100,000 associates, $1.2B in shift costs), eliminating $61M in labor costs annually. Led 25+ engineers across Software, Data Engineering, BI, Applied Data Science, and UX. Continuously led prioritization across Operations, Strategy, HR, Finance, and Tech.",
+    skills: ['python', 'ml', 'research'],
+  },
+  {
+    type: 'work',
+    when: '2019 — 2021',
+    title: 'Product Manager II · Global Specialty Fulfillment',
+    org: 'Amazon · Seattle, WA',
+    body: "Led 0-to-1 development of a prototype workforce planning system for Whole Foods & Sub-Same-Day operations, cutting workload by 95%. Built a team of 3 to rebuild it as a web-app, scaling to >$800M of shifts annually.",
+    skills: ['python', 'research'],
+  },
+  {
+    type: 'work',
+    when: '2018 — 2019',
+    title: 'Program Manager II · Prime Now & Central Operations',
+    org: 'Amazon · Seattle, WA',
+    body: 'Launched Central Operations org. Built change-management and documentation system standardizing 500+ ops processes. Automated 40+ previously manual processes.',
+    skills: ['research'],
+  },
+  {
+    type: 'work',
+    when: '2016 — 2018',
+    title: 'Program Manager I · Prime Now',
+    org: 'Amazon · Seattle, WA',
+    body: "Supported development of three prototype systems powering Amazon's first 2-hour delivery option. Reduced grocery delivery from 4 hours to 2 hours, cut cost-per-delivery by nearly 50%. Managed customer-facing rollout of one-hour delivery (>30% of orders).",
+    skills: ['research'],
+  },
+  {
+    type: 'work',
+    when: '2016',
+    title: 'Program Manager',
+    org: 'Pritzker School of Molecular Engineering · Chicago, IL',
+    body: "Pioneered the first-ever 3D-printed microfluidic device master template, slashing custom development costs by 99% (from $1,400 to $11). Designed student programs and lab protocols to establish the university's first Intro to Molecular Engineering course.",
+    skills: ['research'],
+  },
+  {
+    type: 'work',
+    when: '2014 — 2015',
+    title: 'Cofounder',
+    org: 'Anonymonkey LLC · Chicago, IL',
+    body: "Booth's Polsky Accelerator, $15K seed funding, 2nd place New Venture Challenge. Led development of an app to automate management of anonymous communities on Facebook, scaling to 10,000+ daily active users and 6M+ daily impressions. Built a global ambassador program across 16 countries and five languages.",
+    skills: ['research'],
   },
   {
     type: 'education',
-    when: '2018 — 2022',
-    title: 'B.A., Environmental Studies',
-    org: '[University] · [City]',
-    body: "[One sentence on the degree's character and your direction by the end.]",
-    skills: ['gis', 'policy'],
+    when: '2025 — 2026',
+    title: 'M.S., Civil & Environmental Engineering',
+    org: 'UC Berkeley · Oakland, CA',
+    body: 'A one-year professional master\'s pivoting from a decade of consumer-tech product leadership toward sustainable infrastructure, energy systems, and climate-resilient design. Focus: Energy, Civil Infrastructure & Climate.',
+    skills: ['python', 'r', 'gis', 'policy', 'research'],
+  },
+  {
+    type: 'education',
+    when: '2012 — 2016',
+    title: 'B.S., Geophysical Sciences',
+    org: 'University of Chicago · Chicago, IL · With General Honors',
+    body: "Foundation in earth sciences, statistics, and computational methods — plus the breadth Chicago's core demanded across literature, social sciences, biology, and economics.",
+    skills: ['gis', 'research'],
+  },
+  {
+    type: 'extracurricular',
+    when: '2018 — 2023',
+    title: 'Creative Partner / Photographer',
+    org: 'Washington National Park Fund',
+    body: 'Professional-grade images for marketing, social media, and fundraising for the official philanthropic partner to all three Washington National Parks.',
+    skills: [],
+  },
+  {
+    type: 'extracurricular',
+    when: '2021 — 2025',
+    title: 'Creative Partner / Photographer',
+    org: 'Edge Outdoors',
+    body: 'Traveled with the female-led nonprofit to provide professional-grade images for marketing and fundraising. Published work in The New York Times and Ski Magazine.',
+    skills: [],
+  },
+  {
+    type: 'extracurricular',
+    when: '2020 — 2022',
+    title: 'Cofounder · Sustainability Captain',
+    org: 'Outdoors @ Amazon',
+    body: 'Founded and grew an internal employee organization to 4,000+ members worldwide. As Sustainability Captain, authored the charter and hosted conservation photographer Cristina Mittermeier as a speaker at Amazon.',
+    skills: [],
   },
   {
     type: 'project',
-    when: 'Fall 2024',
+    when: 'Fall 2025',
     title: 'PG&E Feeder Congestion Forecasting',
-    org: 'Data, Environment & Society · Team of 4',
+    org: 'Data, Environment and Society · Team of 4',
     body: "Random Forest forecast for feeder-level congestion across PG&E's distribution system. Owned EV-data pipeline and multi-class congestion-tier model.",
     skills: ['python', 'ml'],
   },
   {
     type: 'project',
-    when: 'Spring 2025',
-    title: 'EV Rebate Causal Analysis',
-    org: 'Causal Inference Lab',
-    body: "Difference-in-differences analysis of California's enhanced rebate program in low-income census tracts.",
-    skills: ['r', 'causal', 'policy'],
+    when: 'Fall 2025',
+    title: 'Vehicle-to-Grid Feeder Study, Alameda County',
+    org: 'Transportation Sustainability',
+    body: "Modeled managed V2G charging on PG&E feeders to quantify peak overload, upgrade costs, and equity impacts under 2035 EV adoption. Green Swan Award '25.",
+    skills: ['gis', 'research', 'policy'],
   },
   {
     type: 'project',
-    when: 'Spring 2025',
-    title: 'Solar Curtailment & the Duck Curve',
-    org: 'Energy Markets & Regulation',
-    body: 'Geospatial analysis of when, where, and why California curtails clean electrons.',
-    skills: ['gis', 'policy'],
+    when: 'Fall 2025',
+    title: 'Nosara 2050 Regional Plan',
+    org: 'Climate Resilient Infrastructure Design Studio',
+    body: 'Designed a watershed-scale, climate-resilient development plan integrating green infrastructure, flood mitigation, electrified mobility, and equitable urban growth for Nosara, Costa Rica.',
+    skills: ['gis', 'research', 'policy'],
   },
 ];
 
 const typeCounts = entries.reduce<Record<EntryType, number>>((acc, e) => {
   acc[e.type] = (acc[e.type] ?? 0) + 1;
   return acc;
-}, { work: 0, education: 0, project: 0 });
+}, { work: 0, education: 0, project: 0, extracurricular: 0 });
 ---
 <Layout title="Résumé — Parker Tikson" description="Interactive résumé — filter Parker Tikson's experience by type and skill." bodyClass="resume-page">
 
@@ -108,8 +172,8 @@ const typeCounts = entries.reduce<Record<EntryType, number>>((acc, e) => {
       Tap an entry to read the longer version.
     </p>
     <div class="h-actions">
-      <a class="btn primary" href="#">Download PDF résumé</a>
-      <a class="btn" href="mailto:parker_tikson@berkeley.edu">Email me</a>
+      {/* TODO: Add "Download PDF résumé" button once the PDF lives somewhere. */}
+      <a class="btn primary" href="mailto:parkertikson@gmail.com">Email me</a>
     </div>
   </header>
 
@@ -120,6 +184,7 @@ const typeCounts = entries.reduce<Record<EntryType, number>>((acc, e) => {
         <button class="pill" type="button" data-filter-type="type" data-value="work">Work <span class="ct">{typeCounts.work}</span></button>
         <button class="pill" type="button" data-filter-type="type" data-value="education">Education <span class="ct">{typeCounts.education}</span></button>
         <button class="pill" type="button" data-filter-type="type" data-value="project">Project <span class="ct">{typeCounts.project}</span></button>
+        <button class="pill" type="button" data-filter-type="type" data-value="extracurricular">Extracurricular <span class="ct">{typeCounts.extracurricular}</span></button>
       </div>
     </div>
     <div class="filter-row">

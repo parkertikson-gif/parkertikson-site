@@ -3,45 +3,122 @@ import Layout from '../../layouts/Layout.astro';
 import '../../styles/masters.css';
 import '../../styles/bachelors.css';
 
-interface OverviewCourse {
+interface QuarterCourse {
   code: string;
   title: string;
-  term: string;
-  deck: string;
+}
+interface Quarter {
+  name: string;
+  courses: QuarterCourse[];
+  location?: string;
 }
 
-const termOrder = [
-  { name: 'Fall 2020', ordinal: 'Junior fall' },
-  { name: 'Spring 2021', ordinal: 'Junior spring' },
-  { name: 'Fall 2021', ordinal: 'Senior fall' },
-  { name: 'Spring 2022', ordinal: 'Senior spring' },
+const quarters: Quarter[] = [
+  {
+    name: 'Autumn 2012',
+    courses: [
+      { code: 'HUMA 11000', title: 'Readings In World Literature-1' },
+      { code: 'MATH 15100', title: 'Calculus-1' },
+      { code: 'PHYS 13100', title: 'Mechanics' },
+    ],
+  },
+  {
+    name: 'Winter 2013',
+    courses: [
+      { code: 'HUMA 11100', title: 'Readings In World Literature-2' },
+      { code: 'MATH 15200', title: 'Calculus-2' },
+      { code: 'PHYS 13200', title: 'Electricity & Magnetism' },
+      { code: 'SPAN 20300', title: 'Language History Culture-3' },
+    ],
+  },
+  {
+    name: 'Spring 2013',
+    courses: [
+      { code: 'BIOS 20150', title: 'A Serious Introduction to Biology for Majors: From LUCA to the University of Chicago' },
+      { code: 'BIOS 20152', title: 'Introduction to Quantitative Modeling in Biology Advanced' },
+      { code: 'MATH 15300', title: 'Calculus-3' },
+      { code: 'PHYS 13300', title: 'Waves, Optics, & Heat' },
+    ],
+  },
+  {
+    name: 'Autumn 2013',
+    courses: [
+      { code: 'CHEM 11100', title: 'Comprehensive General Chemistry-I' },
+      { code: 'GEOS 13100', title: 'Physical Geology' },
+      { code: 'MATH 20000', title: 'Math Methods For Phy Sci-1' },
+      { code: 'SOSC 13100', title: 'Social Science Inquiry-1' },
+    ],
+  },
+  {
+    name: 'Winter 2014',
+    courses: [
+      { code: 'CHEM 11200', title: 'Comprehensive General Chemistry II' },
+      { code: 'GEOS 13200', title: 'Earth History' },
+      { code: 'SOSC 13200', title: 'Social Science Inquiry-2' },
+      { code: 'STAT 22000', title: 'Stat Meth And Applications' },
+    ],
+  },
+  {
+    name: 'Spring 2014',
+    courses: [
+      { code: 'CHEM 11300', title: 'Comprehensive General Chemistry-III' },
+      { code: 'GEOS 13300', title: 'The Atmosphere' },
+      { code: 'SOSC 13300', title: 'Social Sciences Inquiry-3' },
+    ],
+  },
+  {
+    name: 'Autumn 2014',
+    courses: [
+      { code: 'BPRO 29000', title: 'Energy & Energy Policy' },
+      { code: 'GEOS 28300', title: 'Principles Of Stratigraphy' },
+      { code: 'MENG 20000', title: 'Introduction to Emerging Technologies' },
+      { code: 'TAPS 10200', title: 'Acting Fundamentals' },
+    ],
+  },
+  {
+    name: 'Winter 2015',
+    location: 'Oaxaca, Mexico',
+    courses: [
+      { code: 'SOSC 19019', title: 'Latin American Civilization in Oaxaca-1' },
+      { code: 'SOSC 19020', title: 'Latin American Civilization in Oaxaca-2' },
+      { code: 'SOSC 19021', title: 'Latin American Civilization in Oaxaca-3' },
+      { code: 'SPAN 15015', title: 'Advanced Spanish in Oaxaca' },
+    ],
+  },
+  {
+    name: 'Spring 2015',
+    courses: [
+      { code: 'BIOS 20198', title: 'Biodiversity' },
+      { code: 'GEOS 24705', title: 'Energy: Science, Technology and Human Usage' },
+      { code: 'STAT 22200', title: 'Linear Models And Exper Design' },
+    ],
+  },
+  {
+    name: 'Autumn 2015',
+    courses: [
+      { code: 'ECON 19800', title: 'Introduction To Microeconomics' },
+      { code: 'GEOS 22200', title: 'Geochronology' },
+      { code: 'HIPS 20700', title: 'Elementary Logic' },
+    ],
+  },
+  {
+    name: 'Winter 2016',
+    courses: [
+      { code: 'BIOS 20197', title: 'Evolution and Ecology' },
+      { code: 'GEOS 23800', title: 'Global Biogeochemical Cycles' },
+      { code: 'GEOS 25400', title: 'Intro to Numerical Techniques for Geophysical Sciences' },
+    ],
+  },
+  {
+    name: 'Spring 2016',
+    courses: [
+      { code: 'GEOS 23400', title: 'Global Warming for Science Majors' },
+      { code: 'MENG 25000', title: 'Introduction to the Design Process' },
+    ],
+  },
 ];
-
-const courses: OverviewCourse[] = [
-  { code: 'ES 101', title: 'Sustainable Systems', term: 'Fall 2020',
-    deck: '[One- to two-sentence description of the course and the way it shaped your thinking.]' },
-  { code: 'ECON 145', title: 'Environmental Economics', term: 'Spring 2021',
-    deck: '[One- to two-sentence description.]' },
-  { code: 'GEOG 175', title: 'GIS Foundations', term: 'Fall 2021',
-    deck: '[One- to two-sentence description.]' },
-  { code: 'LAEP 1', title: 'Introduction to Environmental Design', term: 'Fall 2021',
-    deck: '[One- to two-sentence description.]' },
-  { code: 'ES 140', title: 'Conservation Biology', term: 'Spring 2022',
-    deck: '[One- to two-sentence description.]' },
-  { code: 'ES H195', title: 'Senior Thesis', term: 'Spring 2022',
-    deck: '[One- to two-sentence description of the thesis question and what you produced.]' },
-];
-
-const grouped = termOrder
-  .map((term, i) => ({
-    name: term.name,
-    ordinal: term.ordinal,
-    index: i + 1,
-    courses: courses.filter(c => c.term === term.name),
-  }))
-  .filter(g => g.courses.length > 0);
 ---
-<Layout title="Bachelor's — Parker Tikson" description="The undergraduate foundation behind the master's work — an overview of selected environmental studies coursework.">
+<Layout title="Bachelor's — Parker Tikson" description="Geophysical Sciences at the University of Chicago — the undergraduate foundation behind the master's work.">
 
   <div class="breadcrumb">
     <a href="/">Home</a>
@@ -55,7 +132,8 @@ const grouped = termOrder
         <div class="h-tag">§ Bachelor's coursework</div>
         <h1>The undergraduate <em>foundation</em>.</h1>
         <p class="h-deck">
-          A short overview of the courses that shaped how I read systems, before the master's gave me tools to measure them.
+          A full record of the courses behind the Geophysical Sciences degree —
+          where the habits of reading systems and asking <em>why</em> first took shape.
         </p>
       </div>
 
@@ -63,11 +141,11 @@ const grouped = termOrder
         <div class="lbl">The degree</div>
         <dl>
           <dt>Program</dt>
-          <dd>B.A., Environmental Studies <span class="sub">University of [School]</span></dd>
+          <dd>B.S., Geophysical Sciences <span class="sub">University of Chicago</span></dd>
           <dt>Span</dt>
-          <dd>2018 — 2022 <span class="sub">Selected from final two years</span></dd>
-          <dt>Focus</dt>
-          <dd>Systems thinking <span class="sub">+ environmental policy</span></dd>
+          <dd>2012 — 2016 <span class="sub">Twelve quarters</span></dd>
+          <dt>Honors</dt>
+          <dd>With General Honors <span class="sub">University of Chicago</span></dd>
         </dl>
       </aside>
     </div>
@@ -82,28 +160,62 @@ const grouped = termOrder
   </section>
 
   <section class="courses-wrap">
-    {grouped.map(group => (
+    {quarters.map((q, i) => (
       <div class="term-block">
         <div class="term-head">
-          <div class="term-tag">§ Term {String(group.index).padStart(2, '0')}</div>
+          <div class="term-tag">§ Q{String(i + 1).padStart(2, '0')}</div>
           <h2 class="term-h">
-            {group.name}
-            <span class="meta">{group.ordinal} · {group.courses.length} {group.courses.length === 1 ? 'course' : 'courses'}</span>
+            {q.name}
+            {q.location && <em class="loc">· {q.location}</em>}
+            <span class="meta">{q.courses.length} courses</span>
           </h2>
         </div>
-        <div class="overview-courses">
-          {group.courses.map(c => (
-            <div class="overview-course">
-              <div class="c-code">{c.code}</div>
-              <div class="c-body">
-                <div class="c-title">{c.title}</div>
-                <div class="c-deck">{c.deck}</div>
-              </div>
+        <div class="quarter-grid">
+          {q.courses.map(c => (
+            <div class="quarter-course">
+              <div class="qc-code">{c.code}</div>
+              <div class="qc-title">{c.title}</div>
             </div>
           ))}
         </div>
       </div>
     ))}
+  </section>
+
+  <section class="beyond">
+    <div class="tag">§ Beyond the transcript</div>
+    <div class="body">
+      <ul class="beyond-list">
+        <li class="beyond-item">
+          <div>
+            <span class="beyond-label">Varsity Soccer</span>
+            <span class="beyond-meta">Four years</span>
+          </div>
+          <div class="beyond-text">2014 UAA Champions. Two-time Athlete of the Week.</div>
+        </li>
+        <li class="beyond-item">
+          <div>
+            <span class="beyond-label">Varsity Track &amp; Field</span>
+            <span class="beyond-meta">Four years</span>
+          </div>
+          <div class="beyond-text">2015–16 Jumps Team Captain. Athlete of the Week honoree.</div>
+        </li>
+        <li class="beyond-item">
+          <div>
+            <span class="beyond-label">Anonymonkey LLC, Cofounder</span>
+            <span class="beyond-meta">2014 — 2015</span>
+          </div>
+          <div class="beyond-text">Booth's Polsky Accelerator, $15K seed funding, 2nd place in the New Venture Challenge. Built a social app to 10K+ DAU and a global ambassador program in 16 countries.</div>
+        </li>
+        <li class="beyond-item">
+          <div>
+            <span class="beyond-label">Pritzker School of Molecular Engineering, Program Manager</span>
+            <span class="beyond-meta">2016</span>
+          </div>
+          <div class="beyond-text">Pioneered a 3D-printed microfluidic device template that cut custom development costs by 99%. Helped launch the university's first Intro to Molecular Engineering course.</div>
+        </li>
+      </ul>
+    </div>
   </section>
 
   <section class="gave-me">
