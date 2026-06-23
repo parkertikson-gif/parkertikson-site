@@ -1,146 +1,86 @@
 ---
+import { Picture, getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import '../styles/photo.css';
 
-const placeholders = [
-  { id: 'g1', vb: '0 0 400 500', svg: `
-    <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ba88c"/><stop offset="1" stop-color="#5a6359"/></linearGradient></defs>
-    <rect width="400" height="500" fill="url(#g1)"/>
-    <path d="M0,380 L80,300 L150,340 L240,260 L320,310 L400,270 L400,500 L0,500 Z" fill="#3a4538" opacity="0.7"/>
-    <path d="M0,420 L120,360 L220,400 L340,350 L400,380 L400,500 L0,500 Z" fill="#1f4d3f" opacity="0.5"/>
-    <circle cx="320" cy="120" r="35" fill="#ffffff" opacity="0.6"/>
-  ` },
-  { id: 'g2', vb: '0 0 400 300', svg: `
-    <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d4c4a0"/><stop offset="1" stop-color="#a89770"/></linearGradient></defs>
-    <rect width="400" height="300" fill="url(#g2)"/>
-    <rect x="0" y="180" width="400" height="120" fill="#7a6a4a" opacity="0.5"/>
-    <rect x="60" y="100" width="40" height="180" fill="#3a2f20" opacity="0.7"/>
-    <rect x="280" y="80" width="35" height="200" fill="#3a2f20" opacity="0.7"/>
-  ` },
-  { id: 'g3', vb: '0 0 400 600', svg: `
-    <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4a52"/><stop offset="1" stop-color="#1a2528"/></linearGradient></defs>
-    <rect width="400" height="600" fill="url(#g3)"/>
-    <path d="M0,400 Q100,360 200,380 T400,370 L400,600 L0,600 Z" fill="#0a1015" opacity="0.6"/>
-    <circle cx="120" cy="180" r="2" fill="#ffffff"/>
-    <circle cx="280" cy="220" r="1.5" fill="#ffffff"/>
-    <circle cx="350" cy="100" r="2.5" fill="#ffffff"/>
-    <circle cx="60" cy="300" r="1" fill="#ffffff"/>
-    <circle cx="200" cy="80" r="1.5" fill="#ffffff"/>
-  ` },
-  { id: 'g4', vb: '0 0 400 400', svg: `
-    <rect width="400" height="400" fill="#c4b89a"/>
-    <ellipse cx="200" cy="220" rx="180" ry="60" fill="#7a6a4a" opacity="0.4"/>
-    <rect x="180" y="140" width="40" height="160" fill="#2a2018" opacity="0.8"/>
-    <ellipse cx="200" cy="140" rx="60" ry="40" fill="#3a4a32" opacity="0.6"/>
-  ` },
-  { id: 'g5', vb: '0 0 400 280', svg: `
-    <defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8d8b8"/><stop offset="0.6" stop-color="#c89878"/><stop offset="1" stop-color="#7a4838"/></linearGradient></defs>
-    <rect width="400" height="280" fill="url(#g5)"/>
-    <path d="M0,200 L60,160 L140,180 L220,140 L300,170 L400,150 L400,280 L0,280 Z" fill="#3a2820" opacity="0.7"/>
-  ` },
-  { id: 'g6', vb: '0 0 400 500', svg: `
-    <rect width="400" height="500" fill="#5a6a55"/>
-    <rect x="40" y="100" width="20" height="300" fill="#2a3528"/>
-    <rect x="100" y="80" width="20" height="320" fill="#2a3528"/>
-    <rect x="160" y="120" width="20" height="280" fill="#2a3528"/>
-    <rect x="220" y="60" width="20" height="340" fill="#2a3528"/>
-    <rect x="280" y="100" width="20" height="300" fill="#2a3528"/>
-    <rect x="340" y="90" width="20" height="310" fill="#2a3528"/>
-    <rect x="0" y="380" width="400" height="120" fill="#3a4535" opacity="0.6"/>
-  ` },
-  { id: 'g7', vb: '0 0 400 350', svg: `
-    <rect width="400" height="350" fill="#1a1f1a"/>
-    <rect x="80" y="60" width="240" height="240" fill="#ffffff" opacity="0.92"/>
-    <circle cx="150" cy="140" r="20" fill="#1f4d3f"/>
-    <rect x="200" y="180" width="80" height="80" fill="#7a6a4a"/>
-  ` },
-  { id: 'g8', vb: '0 0 400 600', svg: `
-    <defs><linearGradient id="g8" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a89770"/><stop offset="1" stop-color="#5a4838"/></linearGradient></defs>
-    <rect width="400" height="600" fill="url(#g8)"/>
-    <path d="M0,300 Q200,200 400,280 L400,600 L0,600 Z" fill="#3a2820" opacity="0.6"/>
-    <path d="M0,400 Q150,340 300,380 T400,370 L400,600 L0,600 Z" fill="#2a1810" opacity="0.7"/>
-  ` },
-  { id: 'g9', vb: '0 0 400 320', svg: `
-    <rect width="400" height="320" fill="#7a8275"/>
-    <ellipse cx="200" cy="200" rx="160" ry="40" fill="#9aa295" opacity="0.6"/>
-    <path d="M120,200 L130,120 L150,200 Z" fill="#2a3528"/>
-    <path d="M250,200 L260,140 L280,200 Z" fill="#2a3528"/>
-  ` },
-  { id: 'g10', vb: '0 0 400 450', svg: `
-    <defs><linearGradient id="g10" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcc8a4"/><stop offset="1" stop-color="#7a6a4a"/></linearGradient></defs>
-    <rect width="400" height="450" fill="url(#g10)"/>
-    <path d="M0,250 L100,180 L180,220 L260,160 L340,200 L400,170 L400,450 L0,450 Z" fill="#5a4838" opacity="0.7"/>
-    <path d="M0,320 L120,260 L200,300 L300,250 L400,280 L400,450 L0,450 Z" fill="#3a2820" opacity="0.7"/>
-  ` },
-  { id: 'g11', vb: '0 0 400 400', svg: `
-    <rect width="400" height="400" fill="#2a3528"/>
-    <circle cx="200" cy="200" r="120" fill="#1f4d3f" opacity="0.7"/>
-    <circle cx="200" cy="200" r="80" fill="#3a5d4a" opacity="0.7"/>
-    <circle cx="200" cy="200" r="40" fill="#5a7d6a" opacity="0.6"/>
-  ` },
-  { id: 'g12', vb: '0 0 400 280', svg: `
-    <rect width="400" height="280" fill="#bcb098"/>
-    <rect x="0" y="160" width="400" height="120" fill="#7a6a4a" opacity="0.6"/>
-    <rect x="100" y="80" width="50" height="120" fill="#3a2820" opacity="0.8"/>
-    <rect x="200" y="60" width="50" height="140" fill="#3a2820" opacity="0.8"/>
-    <rect x="300" y="100" width="50" height="100" fill="#3a2820" opacity="0.8"/>
-  ` },
-];
----
-<Layout title="Photo — Parker Tikson" description="A loose archive of photographs by Parker Tikson — no themes, just whatever asked to be photographed." bodyClass="photo-page">
+const photoModules = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/photos/*.jpg',
+  { eager: true },
+);
 
-  <header class="page">
-    <div class="h-row">
-      <div class="h-left">
-        <span class="h-tag">§ Photo</span>
-        <h1>Things I noticed, <em>kept</em>.</h1>
-      </div>
-      <div class="h-right">
-        <div><span class="ct">{placeholders.length}</span> images</div>
-        <div>2019 — present</div>
-      </div>
-    </div>
-    <p class="h-prose">
-      A loose archive. Some of it published, most of it just for me — but always whatever asked to be photographed.
-      Click any image to see it bigger.
-    </p>
+const photos = await Promise.all(
+  Object.entries(photoModules)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(async ([path, mod]) => {
+      const src = mod.default;
+      const filename = path.split('/').pop()!.replace(/\.jpg$/, '');
+      const alt = filename
+        .replace(/^\d+-/, '')
+        .replace(/-/g, ' ');
+      const full = await getImage({
+        src,
+        width: Math.min(src.width, 1800),
+        format: 'webp',
+        quality: 85,
+      });
+      return { src, alt, fullSrc: full.src };
+    }),
+);
+
+const total = String(photos.length).padStart(2, '0');
+---
+<Layout title="Photography — Parker Tikson" description="A loose archive of photographs by Parker Tikson — no themes, just whatever asked to be photographed." bodyClass="photo-page">
+
+  <header class="photo-header">
+    <h1>Things I noticed, kept.</h1>
+    <p class="deck">A loose archive. No themes, no series — just whatever asked to be photographed.</p>
   </header>
 
   <div class="mosaic" id="mosaic">
-    {placeholders.map(p => (
-      <div class="photo">
+    {photos.map((photo, i) => (
+      <button
+        class="photo"
+        type="button"
+        data-full={photo.fullSrc}
+        data-index={String(i + 1).padStart(2, '0')}
+        aria-label={`Open photo ${i + 1} of ${photos.length}`}
+      >
         <div class="frame">
-          <svg class="placeholder" viewBox={p.vb} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" set:html={p.svg} />
+          <Picture
+            src={photo.src}
+            alt={photo.alt}
+            widths={[400, 800, 1200]}
+            sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw"
+            formats={['webp']}
+            fallbackFormat="jpg"
+            quality={82}
+            loading={i < 3 ? 'eager' : 'lazy'}
+            decoding="async"
+          />
         </div>
-      </div>
+      </button>
     ))}
   </div>
 
   <section class="colophon-strip">
     <div class="col-item">
       <span class="lbl">Published with</span>
-      <span class="val">The New York Times
-        <span class="sub">Ski Magazine</span>
-      </span>
+      <span class="val">The New York Times<span class="sub">Ski Magazine</span></span>
     </div>
     <div class="col-item">
       <span class="lbl">Partner with</span>
-      <span class="val">Washington National Park Fund
-        <span class="sub">2018 — 2023 · Edge Outdoors, 2021 — 2025</span>
-      </span>
+      <span class="val">Washington National Park Fund<span class="sub">2018 — 2023</span></span>
     </div>
     <div class="col-item">
-      <span class="lbl">Prints</span>
-      <span class="val">Available on request
-        <span class="sub">For a friend or a wall, drop a line</span>
-      </span>
+      <span class="lbl">Partner with</span>
+      <span class="val">Edge Outdoors<span class="sub">2021 — 2025</span></span>
     </div>
   </section>
 
-  <div class="lb" id="lb">
-    <button class="lb-close" type="button">Close ✕</button>
+  <div class="lb" id="lb" aria-hidden="true">
+    <button class="lb-close" type="button">Close</button>
     <div class="lb-stage" id="lb-stage"></div>
-    <div class="lb-meta" id="lb-meta">— / —</div>
+    <div class="lb-meta" id="lb-meta">— / {total}</div>
   </div>
 
 </Layout>
@@ -152,24 +92,38 @@ const placeholders = [
   const photos = document.querySelectorAll<HTMLElement>('.photo');
   const total = String(photos.length).padStart(2, '0');
 
-  photos.forEach((p, i) => {
+  const open = (full: string, index: string, alt: string) => {
+    const img = document.createElement('img');
+    img.src = full;
+    img.alt = alt;
+    stage.replaceChildren(img);
+    lbMeta.textContent = `${index} / ${total}`;
+    lb.classList.add('open');
+    lb.setAttribute('aria-hidden', 'false');
+  };
+
+  const close = () => {
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden', 'true');
+    stage.replaceChildren();
+  };
+
+  photos.forEach(p => {
     p.addEventListener('click', () => {
-      const svg = p.querySelector('svg')?.cloneNode(true) as SVGElement | undefined;
-      if (!svg) return;
-      stage.replaceChildren(svg);
-      lbMeta.textContent = `${String(i + 1).padStart(2, '0')} / ${total}`;
-      lb.classList.add('open');
+      const full = p.dataset.full;
+      const index = p.dataset.index;
+      const alt = p.querySelector('img')?.alt ?? '';
+      if (!full || !index) return;
+      open(full, index, alt);
     });
   });
 
   lb.addEventListener('click', e => {
     const target = e.target as HTMLElement;
-    if (target === lb || target.classList.contains('lb-close')) {
-      lb.classList.remove('open');
-    }
+    if (target === lb || target.classList.contains('lb-close')) close();
   });
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') lb.classList.remove('open');
+    if (e.key === 'Escape' && lb.classList.contains('open')) close();
   });
 </script>

@@ -1,14 +1,20 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
+
+const signaturePath = path.resolve('./public/parker-signature.svg');
+const signatureSvg = fs.readFileSync(signaturePath, 'utf-8')
+  .replace(/<\?xml[^?]*\?>/, '')
+  .replace(/<!DOCTYPE[^>]*>/, '');
 ---
 <footer class="site">
   <div class="container">
-    <div class="copy">© 2026 Parker Tikson. Work shown with permission of collaborators.</div>
+    <div class="copy">© 2026 Parker Tikson</div>
     <div class="links">
       <a href="mailto:parkertikson@gmail.com">Email</a>
       <a href="https://linkedin.com/in/parkertikson/" rel="me">LinkedIn</a>
-      {/* TODO: GitHub — github.com/parkertikson returned 404 at build time. Add when account exists. */}
       <a href="/resume">Résumé</a>
     </div>
-    <div class="colophon">Set in Fraunces &amp; Inter Tight. Built with care.</div>
+    <div class="sig" aria-label="Parker's signature" set:html={signatureSvg} />
   </div>
 </footer>

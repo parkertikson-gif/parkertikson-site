@@ -1,145 +1,130 @@
-/* Inherits header, term-block, term-head, term-tag, term-h, degree-card,
-   h-grid, h-tag, h-deck, breadcrumb from masters.css.
-   The overview-specific bits are below. */
+/* ─── BACHELOR'S PAGE ─── */
 
-/* ─── INTRO ─── */
-.overview-intro {
-  padding: 48px 0 8px;
+.degree-header {
+  padding: 32px 0 24px;
 }
-.overview-intro p {
+.degree-header h1 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
-  font-size: 22px;
-  line-height: 1.5;
-  color: var(--ink);
-  max-width: 60ch;
-}
-
-/* ─── QUARTER GRID (per-quarter 2-column course layout) ─── */
-.term-h .loc {
-  font-style: italic;
-  font-weight: 300;
-  font-size: 18px;
-  color: var(--accent);
-  letter-spacing: -0.005em;
-}
-
-.quarter-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 48px;
-  row-gap: 0;
-  border-top: 1px solid rgba(26,31,26,0.12);
-  border-bottom: 1px solid rgba(26,31,26,0.12);
-}
-.quarter-course {
-  padding: 18px 0;
-  border-bottom: 1px dotted rgba(26,31,26,0.12);
-}
-/* drop the bottom border on the last row (handles both even and odd counts) */
-.quarter-course:nth-last-child(-n+2):nth-child(even),
-.quarter-course:last-child {
-  border-bottom: none;
-}
-.qc-code {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.05em;
-  margin-bottom: 4px;
-}
-.qc-title {
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: 17px;
-  line-height: 1.3;
+  font-weight: 400;
+  font-size: var(--fs-title);
   letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.degree-header .program {
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+.degree-header .program .sep { opacity: 0.6; }
+.degree-header .deck {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: var(--measure);
 }
 
-/* ─── BEYOND THE TRANSCRIPT ─── */
-.beyond {
-  margin-top: 56px;
-  padding: 36px 0 16px;
-  border-top: 1px solid rgba(26,31,26,0.18);
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 48px;
+/* ─── TRANSCRIPT (single column) ─── */
+.transcript {
+  padding: 16px 0 8px;
 }
-.beyond .tag {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: var(--accent);
-  text-transform: uppercase;
-  border-top: 2px solid var(--accent);
-  padding-top: 10px;
+.quarter {
+  margin-top: 36px;
 }
-.beyond .body { max-width: 60ch; }
-.beyond-list {
+.quarter:first-child { margin-top: 12px; }
+.quarter-name {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: var(--fs-body);
+  color: var(--muted);
+  margin-bottom: 10px;
+  letter-spacing: 0;
+}
+.quarter-name .loc {
+  font-style: italic;
+  color: var(--muted);
+}
+
+.courses {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.beyond-item {
-  padding: 14px 0;
-  border-bottom: 1px dotted rgba(26,31,26,0.18);
+.transcript .row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 18px;
+  padding: 8px 0;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  border-top: 1px solid var(--rule);
 }
-.beyond-item:last-child { border-bottom: none; }
-.beyond-label {
+.transcript .row:first-child { border-top: none; }
+.transcript .row .code {
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  align-self: center;
+}
+.transcript .row .title {
+  font-family: var(--serif);
+  font-weight: 400;
+}
+
+/* ─── BEYOND / GAVE-ME ─── */
+.beyond, .gave-me {
+  padding: 48px 0 8px;
+}
+.beyond h2, .gave-me h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: var(--fs-body);
+  color: var(--muted);
+  margin-bottom: 18px;
+  letter-spacing: 0;
+}
+
+.beyond-list { list-style: none; padding: 0; margin: 0; }
+.beyond-list li {
+  padding: 16px 0;
+  border-top: 1px solid var(--rule);
+}
+.beyond-list li:first-child { border-top: none; }
+.b-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 18px;
+  margin-bottom: 4px;
+}
+.b-label {
   font-family: var(--serif);
   font-weight: 500;
-  font-size: 16px;
-  letter-spacing: -0.005em;
-  color: var(--ink);
+  font-size: var(--fs-body);
 }
-.beyond-meta {
-  margin-left: 8px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.05em;
+.b-meta {
+  font-size: var(--fs-meta);
   color: var(--muted);
 }
-.beyond-text {
-  margin-top: 4px;
+.b-text {
   font-family: var(--serif);
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--muted);
+  font-size: var(--fs-body);
+  color: var(--ink);
+  line-height: 1.6;
+  max-width: var(--measure);
 }
 
-/* ─── REFLECTION BAND ─── */
-.gave-me {
-  margin-top: 72px;
-  padding: 40px 0 16px;
-  border-top: 1px solid var(--rule);
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 48px;
-}
-.gave-me .tag {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: var(--accent);
-  text-transform: uppercase;
-  border-top: 2px solid var(--accent);
-  padding-top: 10px;
-}
-.gave-me .body { max-width: 60ch; }
 .gave-me p {
   font-family: var(--serif);
-  font-size: 18px;
-  line-height: 1.65;
-  color: var(--ink);
-  margin-bottom: 16px;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  margin-bottom: 1em;
+  max-width: var(--measure);
 }
-.gave-me p:last-child { margin-bottom: 0; }
-.gave-me p em { font-style: italic; color: var(--accent); }
 
-/* ─── RESPONSIVE ─── */
-@media (max-width: 880px) {
-  .quarter-grid { grid-template-columns: 1fr; }
-  .beyond { grid-template-columns: 1fr; gap: 16px; }
-  .gave-me { grid-template-columns: 1fr; gap: 16px; }
+@media (max-width: 640px) {
+  .transcript .row { grid-template-columns: 1fr; gap: 2px; }
+  .b-head { flex-direction: column; gap: 2px; }
 }

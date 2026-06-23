@@ -157,87 +157,65 @@ const entries: Entry[] = [
   },
 ];
 
-const typeCounts = entries.reduce<Record<EntryType, number>>((acc, e) => {
-  acc[e.type] = (acc[e.type] ?? 0) + 1;
-  return acc;
-}, { work: 0, education: 0, project: 0, extracurricular: 0 });
+const typeOrder: EntryType[] = ['work', 'education', 'project', 'extracurricular'];
+const typeLabels: Record<EntryType, string> = {
+  work: 'Work',
+  education: 'Education',
+  project: 'Project',
+  extracurricular: 'Extracurricular',
+};
 ---
 <Layout title="Résumé — Parker Tikson" description="Interactive résumé — filter Parker Tikson's experience by type and skill." bodyClass="resume-page">
 
-  <header class="page">
-    <div class="h-tag">§ Résumé · Interactive</div>
-    <h1>Filter the path here by what you actually <em>care</em> about.</h1>
-    <p class="h-deck">
-      Tap a skill to see only the experiences where I used it.
-      Tap an entry to read the longer version.
-    </p>
-    <div class="h-actions">
-      {/* TODO: Add "Download PDF résumé" button once the PDF lives somewhere. */}
-      <a class="btn primary" href="mailto:parkertikson@gmail.com">Email me</a>
-    </div>
+  <header class="resume-header">
+    <h1>Résumé</h1>
+    <p class="deck">A working path. Filter by type or skill to focus, or click any entry for the longer version.</p>
   </header>
 
   <div class="filters">
-    <div class="filter-row">
-      <div class="filter-lbl">Filter by type</div>
+    <div class="filter-group">
+      <span class="filter-lbl">Type</span>
       <div class="pills" id="type-pills">
-        <button class="pill" type="button" data-filter-type="type" data-value="work">Work <span class="ct">{typeCounts.work}</span></button>
-        <button class="pill" type="button" data-filter-type="type" data-value="education">Education <span class="ct">{typeCounts.education}</span></button>
-        <button class="pill" type="button" data-filter-type="type" data-value="project">Project <span class="ct">{typeCounts.project}</span></button>
-        <button class="pill" type="button" data-filter-type="type" data-value="extracurricular">Extracurricular <span class="ct">{typeCounts.extracurricular}</span></button>
+        {typeOrder.map(t => (
+          <button class="pill" type="button" data-filter-type="type" data-value={t}>{typeLabels[t]}</button>
+        ))}
       </div>
     </div>
-    <div class="filter-row">
-      <div class="filter-lbl">Filter by skill</div>
+    <div class="filter-group">
+      <span class="filter-lbl">Skill</span>
       <div class="pills" id="skill-pills">
         {skillOrder.map(key => (
           <button class="pill" type="button" data-filter-type="skill" data-value={key}>{skillLabels[key]}</button>
         ))}
-        <button class="clear" type="button" id="clear-btn">Clear all</button>
+        <button class="clear" type="button" id="clear-btn">Clear</button>
       </div>
     </div>
   </div>
 
-  <section class="entries-wrap">
-    <div class="entries-grid">
-
-      <div class="entries-side">
-        <div class="side-tag">§ Path</div>
-        <h2 class="side-h">{entries.length} entries.<br />Showing <span class="visible-count" id="visible-count">all</span>.</h2>
-        <div class="side-meta">
-          <span class="live">●</span> Click any row to expand<br />
-          Click skills to filter
+  <section class="entries">
+    {entries.map(e => (
+      <div class="entry" data-type={e.type} data-skills={e.skills.join(',')}>
+        <button class="entry-head" type="button">
+          <span class="entry-when">{e.when}</span>
+          <span class="entry-title-block">
+            <span class="entry-title">{e.title}</span>
+            <span class="entry-org">{e.org}</span>
+          </span>
+          <span class="entry-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="entry-body">
+          <p>{e.body}</p>
+          {e.skills.length > 0 && (
+            <div class="entry-skills">
+              {e.skills.map(s => (
+                <span class="entry-skill" data-s={s}>{skillLabels[s]}</span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
-
-      <div class="entries" id="entries">
-        {entries.map(e => (
-          <div class="entry" data-type={e.type} data-skills={e.skills.join(',')}>
-            <div class="entry-head">
-              <div class="entry-when">{e.when}</div>
-              <div class="entry-title-block">
-                <div class="entry-title">{e.title}</div>
-                <div class="entry-org">{e.org}</div>
-              </div>
-              <div class="entry-toggle">+</div>
-            </div>
-            <div class="entry-body">
-              <p>{e.body}</p>
-              <div class="entry-skills">
-                {e.skills.map(s => (
-                  <span class="entry-skill" data-s={s}>{skillLabels[s]}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div class="empty" id="empty-state">
-        Nothing matches that combination — try removing a filter.
-      </div>
-
-    </div>
+    ))}
+    <div class="empty" id="empty-state">Nothing matches that combination — try removing a filter.</div>
   </section>
 
 </Layout>
@@ -250,8 +228,6 @@ const typeCounts = entries.reduce<Record<EntryType, number>>((acc, e) => {
   const state = { types: new Set<string>(), skills: new Set<string>() };
   const entryEls = Array.from(document.querySelectorAll<HTMLElement>('.entry'));
   const empty = document.getElementById('empty-state')!;
-  const visibleCount = document.getElementById('visible-count')!;
-  const total = entryEls.length;
 
   function applyFilters() {
     let visible = 0;
@@ -263,20 +239,14 @@ const typeCounts = entries.reduce<Record<EntryType, number>>((acc, e) => {
       const skillOK = state.skills.size === 0 ||
                       [...state.skills].every(sk => s.includes(sk));
 
-      e.classList.remove('hidden', 'dim');
-      if (!typeOK || !skillOK) {
-        e.classList.add('hidden');
-      } else {
-        visible++;
-      }
+      e.classList.toggle('hidden', !(typeOK && skillOK));
+      if (typeOK && skillOK) visible++;
 
       e.querySelectorAll<HTMLElement>('.entry-skill').forEach(sp => {
         sp.classList.toggle('match', state.skills.has(sp.dataset.s ?? ''));
       });
     });
 
-    visibleCount.textContent = visible === total ? 'all' :
-                               visible === 0 ? 'none' : `${visible} of ${total}`;
     empty.classList.toggle('show', visible === 0);
   }
 
@@ -292,7 +262,6 @@ const typeCounts = entries.reduce<Record<EntryType, number>>((acc, e) => {
         set.add(value);
         p.classList.add('active');
       }
-      if (filter === 'skill') p.classList.toggle('skill', set.has(value));
       applyFilters();
     });
   });
@@ -300,7 +269,7 @@ const typeCounts = entries.reduce<Record<EntryType, number>>((acc, e) => {
   document.getElementById('clear-btn')!.addEventListener('click', () => {
     state.types.clear();
     state.skills.clear();
-    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active', 'skill'));
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
     applyFilters();
   });
 </script>

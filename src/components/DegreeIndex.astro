@@ -14,17 +14,11 @@ interface DegreeConfig {
   label: string;
   pageTitle: string;
   pageDescription: string;
-  headerTag: string;
   headline: string;
   deck: string;
-  degreeCard: {
-    program: { value: string; sub: string };
-    span: { value: string; sub: string };
-    focus: { value: string; sub: string };
-  };
-  pills: { key: string; label: string }[];
-  terms: { name: string; ordinal: string }[];
-  graduationYear: string;
+  programLine: string;
+  spanLine: string;
+  terms: string[];
 }
 
 const configs: Record<Degree, DegreeConfig> = {
@@ -32,27 +26,11 @@ const configs: Record<Degree, DegreeConfig> = {
     label: "Master's",
     pageTitle: "Master's — Parker Tikson",
     pageDescription: "A working archive of master's coursework at UC Berkeley — Civil & Environmental Engineering, with a focus on energy, infrastructure, and climate.",
-    headerTag: "§ Master's coursework",
-    headline: 'One year, eight courses, one <em>through-line</em>.',
-    deck: "A working archive of the projects and papers I produced while studying civil &amp; environmental engineering at Berkeley. Click any course to see the final deliverable, my role, and what I took from it.",
-    degreeCard: {
-      program: { value: 'M.S., Civil &amp; Environmental Engineering', sub: 'UC Berkeley' },
-      span: { value: '2025 — 2026', sub: 'Two semesters' },
-      focus: { value: 'Energy &amp; Climate', sub: '+ civil infrastructure' },
-    },
-    pills: [
-      { key: 'all', label: 'All' },
-      { key: 'ml', label: 'Machine learning' },
-      { key: 'causal', label: 'Causal inference' },
-      { key: 'gis', label: 'Geospatial' },
-      { key: 'policy', label: 'Policy' },
-      { key: 'markets', label: 'Markets' },
-    ],
-    terms: [
-      { name: 'Fall 2025', ordinal: 'First semester' },
-      { name: 'Spring 2026', ordinal: 'Second semester' },
-    ],
-    graduationYear: '2026',
+    headline: "Master's coursework",
+    deck: "A working archive of the projects from my one year studying civil & environmental engineering at Berkeley. Each course links to the final deliverable, with a short note on what it was about and what I did.",
+    programLine: 'M.S., Civil & Environmental Engineering · UC Berkeley',
+    spanLine: '2025 — 2026',
+    terms: ['Fall 2025', 'Spring 2026'],
   },
 };
 
@@ -62,161 +40,61 @@ const all = await getCollection('courses');
 const courses = all.filter(e => e.data.degree === degree);
 
 const grouped = cfg.terms
-  .map((term, i) => ({
-    name: term.name,
-    ordinal: term.ordinal,
-    index: i + 1,
-    courses: courses.filter(e => e.data.term === term.name),
+  .map(term => ({
+    name: term,
+    courses: courses.filter(e => e.data.term === term),
   }))
   .filter(g => g.courses.length > 0);
-
-const totalCourses = courses.length;
-const totalUnits = courses.reduce((sum, e) => sum + (e.data.units ?? 0), 0);
-const totalSemesters = grouped.length;
 
 const slugOf = (id: string) => id.split('/').pop()!;
 const degreeHref = `/${degree}`;
 ---
 <Layout title={cfg.pageTitle} description={cfg.pageDescription}>
 
-  <div class="breadcrumb">
+  <nav class="breadcrumb">
     <a href="/">Home</a>
     <span class="sep">/</span>
     <span>{cfg.label}</span>
-  </div>
+  </nav>
 
-  <header class="page">
-    <div class="h-grid">
-      <div>
-        <div class="h-tag">{cfg.headerTag}</div>
-        <h1 set:html={cfg.headline} />
-        <p class="h-deck" set:html={cfg.deck} />
-      </div>
-
-      <aside class="degree-card">
-        <div class="lbl">The degree</div>
-        <dl>
-          <dt>Program</dt>
-          <dd set:html={`${cfg.degreeCard.program.value} <span class="sub">${cfg.degreeCard.program.sub}</span>`} />
-          <dt>Span</dt>
-          <dd set:html={`${cfg.degreeCard.span.value} <span class="sub">${cfg.degreeCard.span.sub}</span>`} />
-          <dt>Focus</dt>
-          <dd set:html={`${cfg.degreeCard.focus.value} <span class="sub">${cfg.degreeCard.focus.sub}</span>`} />
-        </dl>
-      </aside>
-    </div>
+  <header class="degree-header">
+    <h1>{cfg.headline}</h1>
+    <p class="program">{cfg.programLine}<span class="sep"> · </span>{cfg.spanLine}</p>
+    <p class="deck">{cfg.deck}</p>
   </header>
 
-  <div class="filters">
-    <div class="filter-pills" id="pills">
-      {cfg.pills.map((p, i) => (
-        <button class:list={['pill', { active: i === 0 }]} data-filter={p.key}>{p.label}</button>
-      ))}
-    </div>
-    <div class="filter-meta">
-      Showing <span class="count" id="count">{totalCourses}</span> courses
-    </div>
-  </div>
-
-  <section class="courses-wrap">
+  <section class="terms">
     {grouped.map(group => (
-      <div class="term-block" data-term>
-        <div class="term-head">
-          <div class="term-tag">§ Term {String(group.index).padStart(2, '0')}</div>
-          <h2 class="term-h">
-            {group.name}
-            <span class="meta">{group.ordinal} · {group.courses.length} {group.courses.length === 1 ? 'course' : 'courses'}</span>
-          </h2>
-        </div>
-        <div class="courses">
+      <div class="term">
+        <h2 class="term-name">{group.name}</h2>
+        <ul class="courses">
           {group.courses.map(course => {
             const d = course.data;
             const slug = slugOf(course.id);
-            const tagsAttr = (d.tags ?? []).join(',');
             const hasPage = d.hasPage !== false;
-            const Tag = hasPage ? 'a' : 'div';
-            const linkProps = hasPage ? { href: `${degreeHref}/${slug}` } : {};
             return (
-              <Tag
-                class:list={['course', { 'no-page': !hasPage }]}
-                {...linkProps}
-                data-tags={tagsAttr}
-              >
-                <div class="c-code">
-                  {d.code}
-                  {!hasPage && <><br /><span class="no-page-label">Course only</span></>}
-                </div>
-                <div class="c-body">
-                  <div class="c-title" set:html={d.title} />
-                  <div class="c-deck" set:html={d.deck} />
-                  {d.displayTags && d.displayTags.length > 0 && (
-                    <div class="c-tags">
-                      {d.displayTags.map(t => <span class="c-tag">{t}</span>)}
-                    </div>
-                  )}
-                </div>
-                <div class="c-meta">
-                  {d.grade && <><span class="grade">{d.grade}</span><br /></>}
-                  {d.units != null && <>{d.units} units</>}
-                  {d.deliverable && <span class="deliv">{d.deliverable}</span>}
-                </div>
-              </Tag>
+              <li class="course">
+                {hasPage ? (
+                  <a href={`${degreeHref}/${slug}`} class="row">
+                    <span class="code">{d.code}</span>
+                    <span class="title">{d.title}</span>
+                    <span class="deck">{d.deck}</span>
+                    {d.grade && <span class="grade">{d.grade}</span>}
+                  </a>
+                ) : (
+                  <div class="row no-page">
+                    <span class="code">{d.code}</span>
+                    <span class="title">{d.title}</span>
+                    <span class="deck">{d.deck}</span>
+                    {d.grade && <span class="grade">{d.grade}</span>}
+                  </div>
+                )}
+              </li>
             );
           })}
-        </div>
+        </ul>
       </div>
     ))}
   </section>
 
-  <section class="summary">
-    <div class="summary-grid">
-      <div class="stat">
-        <div class="num">{totalCourses}</div>
-        <div class="lbl">Courses completed<br />or in progress</div>
-      </div>
-      <div class="stat">
-        <div class="num">{totalSemesters}</div>
-        <div class="lbl">Semesters at<br />the program</div>
-      </div>
-      <div class="stat">
-        <div class="num">{totalUnits}<span class="unit">u</span></div>
-        <div class="lbl">Units toward<br />the degree</div>
-      </div>
-      <div class="stat">
-        <div class="num">{cfg.graduationYear}</div>
-        <div class="lbl">Expected<br />graduation</div>
-      </div>
-    </div>
-  </section>
-
 </Layout>
-
-<script>
-  const pills = document.querySelectorAll<HTMLButtonElement>('.pill');
-  const courses = document.querySelectorAll<HTMLElement>('.course');
-  const terms = document.querySelectorAll<HTMLElement>('.term-block');
-  const countEl = document.getElementById('count');
-
-  pills.forEach(p => {
-    p.addEventListener('click', () => {
-      pills.forEach(x => x.classList.remove('active'));
-      p.classList.add('active');
-      const filter = p.dataset.filter;
-
-      let visible = 0;
-      courses.forEach(c => {
-        const tags = (c.dataset.tags || '').split(',').filter(Boolean);
-        const show = filter === 'all' || tags.includes(filter!);
-        c.classList.toggle('hidden', !show);
-        if (show) visible++;
-      });
-
-      terms.forEach(t => {
-        const hasVisible = t.querySelectorAll('.course:not(.hidden)').length > 0;
-        t.classList.toggle('empty', !hasVisible);
-      });
-
-      if (countEl) countEl.textContent = String(visible);
-    });
-  });
-</script>

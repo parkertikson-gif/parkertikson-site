@@ -1,13 +1,17 @@
 :root {
-  --ink:        #161915;
-  --paper:      #ffffff;
-  --paper-2:    #f4f4f1;
-  --rule:       #1a1f1a;
-  --muted:      #5a6359;
-  --accent:     #1f4d3f;
-  --accent-2:   #4a3f2d;
+  --ink:        #1a1a18;
+  --paper:      #fafaf7;
+  --paper-2:    #f3f1ec;
+  --rule:       rgba(26, 26, 24, 0.18);
+  --muted:      #6b6b66;
+  --accent:     currentColor;
 
   --serif:      'Fraunces', Georgia, serif;
   --sans:       'Inter Tight', system-ui, sans-serif;
-  --mono:       'JetBrains Mono', ui-monospace, monospace;
+
+  --measure:    68ch;
+
+  --fs-body:    17px;
+  --fs-title:   30px;
+  --fs-meta:    13px;
 }

@@ -2,11 +2,6 @@
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/course/Breadcrumb.astro';
-import ProjectHeader from '../../components/course/ProjectHeader.astro';
-import Tldr from '../../components/course/Tldr.astro';
-import RoleCard from '../../components/course/RoleCard.astro';
-import Reflection from '../../components/course/Reflection.astro';
-import Downloads from '../../components/course/Downloads.astro';
 import ProjectNav from '../../components/course/ProjectNav.astro';
 import '../../styles/course.css';
 
@@ -24,31 +19,38 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 const data = entry.data;
 
-const meta = [
-  { label: 'Course', value: data.title },
-  { label: 'Term', value: data.term },
-  ...(data.format ? [{ label: 'Format', value: data.format }] : []),
-  ...(data.discipline ? [{ label: 'Discipline', value: data.discipline }] : []),
-];
+const summary = data.summary ?? data.deck;
+const paragraphs = summary.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
 
-const headline = data.headline ?? data.title;
+const deliverableHref = data.deliverable
+  ? `/projects/${data.deliverable.filename}`
+  : null;
+const deliverableLabel = data.deliverable?.label ?? 'Read the project';
 ---
 <Layout title={`${data.title} — Parker Tikson`} description={data.description ?? data.deck}>
   <Breadcrumb degree={data.degree} courseTitle={data.title} />
 
-  <ProjectHeader meta={meta} headline={headline} deck={data.deck} />
+  <article class="course-page">
+    <header class="course-header">
+      <div class="meta">
+        <span>{data.code}</span>
+        <span class="dot">·</span>
+        <span>{data.term}</span>
+      </div>
+      <h1>{data.title}</h1>
+    </header>
 
-  {data.tldr && <Tldr statement={data.tldr.statement} stats={data.tldr.stats} />}
+    <div class="course-body">
+      {paragraphs.map(p => <p>{p}</p>)}
+      <Content />
+    </div>
 
-  {data.contribution && (
-    <RoleCard contribution={data.contribution} teammates={data.teammates} />
-  )}
+    {deliverableHref && (
+      <div class="deliverable">
+        <a href={deliverableHref}>{deliverableLabel} →</a>
+      </div>
+    )}
 
-  <Content />
-
-  {data.reflection && <Reflection text={data.reflection} />}
-
-  {data.downloads && <Downloads downloads={data.downloads} />}
-
-  <ProjectNav degree={data.degree} prev={data.prevCourse} next={data.nextCourse} />
+    <ProjectNav degree={data.degree} prev={data.prevCourse} next={data.nextCourse} />
+  </article>
 </Layout>

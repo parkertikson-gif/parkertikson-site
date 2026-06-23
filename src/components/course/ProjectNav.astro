@@ -8,11 +8,17 @@ interface Props {
 const { degree, prev, next } = Astro.props;
 const base = degree === 'masters' ? '/masters' : '/bachelors';
 ---
-<footer class="proj-nav">
+<nav class="proj-nav">
   {prev ? (
-    <a href={`${base}/${prev.slug}`}>← Previous · {prev.title}</a>
+    <a class="prev" href={`${base}/${prev.slug}`}>
+      <span class="dir">← Previous</span>
+      <span class="ttl">{prev.title}</span>
+    </a>
   ) : <span />}
   {next && (
-    <a href={`${base}/${next.slug}`} class="next">Next: <em>{next.title} →</em></a>
+    <a class="next" href={`${base}/${next.slug}`}>
+      <span class="dir">Next →</span>
+      <span class="ttl">{next.title}</span>
+    </a>
   )}
-</footer>
+</nav>

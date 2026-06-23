@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import '../../styles/masters.css';
 import '../../styles/bachelors.css';
 
 interface QuarterCourse {
@@ -117,120 +116,85 @@ const quarters: Quarter[] = [
     ],
   },
 ];
+
+const beyond = [
+  {
+    label: 'Varsity Soccer',
+    meta: 'Four years',
+    text: '2014 UAA Champions. Two-time Athlete of the Week.',
+  },
+  {
+    label: 'Varsity Track & Field',
+    meta: 'Four years',
+    text: '2015–16 Jumps Team Captain. Athlete of the Week honoree.',
+  },
+  {
+    label: 'Anonymonkey LLC, Cofounder',
+    meta: '2014 — 2015',
+    text: "Booth's Polsky Accelerator, $15K seed funding, 2nd place in the New Venture Challenge. Built a social app to 10K+ DAU and a global ambassador program in 16 countries.",
+  },
+  {
+    label: 'Pritzker School of Molecular Engineering, Program Manager',
+    meta: '2016',
+    text: "Pioneered a 3D-printed microfluidic device template that cut custom development costs by 99%. Helped launch the university's first Intro to Molecular Engineering course.",
+  },
+];
 ---
 <Layout title="Bachelor's — Parker Tikson" description="Geophysical Sciences at the University of Chicago — the undergraduate foundation behind the master's work.">
 
-  <div class="breadcrumb">
+  <nav class="breadcrumb">
     <a href="/">Home</a>
     <span class="sep">/</span>
     <span>Bachelor's</span>
-  </div>
+  </nav>
 
-  <header class="page">
-    <div class="h-grid">
-      <div>
-        <div class="h-tag">§ Bachelor's coursework</div>
-        <h1>The undergraduate <em>foundation</em>.</h1>
-        <p class="h-deck">
-          A full record of the courses behind the Geophysical Sciences degree —
-          where the habits of reading systems and asking <em>why</em> first took shape.
-        </p>
-      </div>
-
-      <aside class="degree-card">
-        <div class="lbl">The degree</div>
-        <dl>
-          <dt>Program</dt>
-          <dd>B.S., Geophysical Sciences <span class="sub">University of Chicago</span></dd>
-          <dt>Span</dt>
-          <dd>2012 — 2016 <span class="sub">Twelve quarters</span></dd>
-          <dt>Honors</dt>
-          <dd>With General Honors <span class="sub">University of Chicago</span></dd>
-        </dl>
-      </aside>
-    </div>
+  <header class="degree-header">
+    <h1>Bachelor's coursework</h1>
+    <p class="program">B.S., Geophysical Sciences · University of Chicago<span class="sep"> · </span>2012 — 2016, With General Honors</p>
+    <p class="deck">
+      <em>A longer reflection is in progress. For now, the transcript speaks.</em>
+    </p>
   </header>
 
-  <section class="overview-intro">
-    <p>
-      [Two or three sentences here, in your voice, positioning the undergrad
-      degree as the foundational thinking behind the technical work that came
-      after — what it taught you to ask, how it shaped the way you read systems.]
-    </p>
-  </section>
-
-  <section class="courses-wrap">
-    {quarters.map((q, i) => (
-      <div class="term-block">
-        <div class="term-head">
-          <div class="term-tag">§ Q{String(i + 1).padStart(2, '0')}</div>
-          <h2 class="term-h">
-            {q.name}
-            {q.location && <em class="loc">· {q.location}</em>}
-            <span class="meta">{q.courses.length} courses</span>
-          </h2>
-        </div>
-        <div class="quarter-grid">
+  <section class="transcript">
+    {quarters.map(q => (
+      <div class="quarter">
+        <h2 class="quarter-name">
+          {q.name}
+          {q.location && <span class="loc"> · {q.location}</span>}
+        </h2>
+        <ul class="courses">
           {q.courses.map(c => (
-            <div class="quarter-course">
-              <div class="qc-code">{c.code}</div>
-              <div class="qc-title">{c.title}</div>
-            </div>
+            <li class="row">
+              <span class="code">{c.code}</span>
+              <span class="title">{c.title}</span>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     ))}
   </section>
 
   <section class="beyond">
-    <div class="tag">§ Beyond the transcript</div>
-    <div class="body">
-      <ul class="beyond-list">
-        <li class="beyond-item">
-          <div>
-            <span class="beyond-label">Varsity Soccer</span>
-            <span class="beyond-meta">Four years</span>
+    <h2>Beyond the transcript</h2>
+    <ul class="beyond-list">
+      {beyond.map(b => (
+        <li>
+          <div class="b-head">
+            <span class="b-label">{b.label}</span>
+            <span class="b-meta">{b.meta}</span>
           </div>
-          <div class="beyond-text">2014 UAA Champions. Two-time Athlete of the Week.</div>
+          <p class="b-text">{b.text}</p>
         </li>
-        <li class="beyond-item">
-          <div>
-            <span class="beyond-label">Varsity Track &amp; Field</span>
-            <span class="beyond-meta">Four years</span>
-          </div>
-          <div class="beyond-text">2015–16 Jumps Team Captain. Athlete of the Week honoree.</div>
-        </li>
-        <li class="beyond-item">
-          <div>
-            <span class="beyond-label">Anonymonkey LLC, Cofounder</span>
-            <span class="beyond-meta">2014 — 2015</span>
-          </div>
-          <div class="beyond-text">Booth's Polsky Accelerator, $15K seed funding, 2nd place in the New Venture Challenge. Built a social app to 10K+ DAU and a global ambassador program in 16 countries.</div>
-        </li>
-        <li class="beyond-item">
-          <div>
-            <span class="beyond-label">Pritzker School of Molecular Engineering, Program Manager</span>
-            <span class="beyond-meta">2016</span>
-          </div>
-          <div class="beyond-text">Pioneered a 3D-printed microfluidic device template that cut custom development costs by 99%. Helped launch the university's first Intro to Molecular Engineering course.</div>
-        </li>
-      </ul>
-    </div>
+      ))}
+    </ul>
   </section>
 
   <section class="gave-me">
-    <div class="tag">§ What this gave me</div>
-    <div class="body">
-      <p>
-        [Two or three sentences on what the undergrad actually left you with —
-        not a credential list, but the <em>habits of attention</em> that still
-        show up in the master's work.]
-      </p>
-      <p>
-        [Optional second paragraph if there's a specific thread worth naming —
-        a course, a professor, a question that's still open.]
-      </p>
-    </div>
+    <h2>What this gave me</h2>
+    <p>
+      <em>A reflection is in progress.</em>
+    </p>
   </section>
 
 </Layout>
