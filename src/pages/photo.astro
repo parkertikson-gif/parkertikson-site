@@ -86,6 +86,29 @@ const total = String(photos.length).padStart(2, '0');
 </Layout>
 
 <script>
+  // Fisher-Yates shuffle of the mosaic, then reveal. Runs once per page load.
+  // Source-file order is alphabetical (deterministic SSR); we randomize at the
+  // client and re-number data-index so the lightbox counter reflects the
+  // shuffled position, not the source-file position.
+  const mosaic = document.getElementById('mosaic')!;
+  const cells = Array.from(mosaic.querySelectorAll<HTMLElement>('.photo'));
+
+  for (let i = cells.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cells[i], cells[j]] = [cells[j], cells[i]];
+  }
+
+  cells.forEach((cell, i) => {
+    const idx = String(i + 1).padStart(2, '0');
+    cell.dataset.index = idx;
+    cell.setAttribute('aria-label', `Open photo ${i + 1} of ${cells.length}`);
+    mosaic.appendChild(cell);
+  });
+
+  mosaic.classList.add('shuffled');
+</script>
+
+<script>
   const lb = document.getElementById('lb')!;
   const stage = document.getElementById('lb-stage')!;
   const lbMeta = document.getElementById('lb-meta')!;
